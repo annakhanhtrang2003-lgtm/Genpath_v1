@@ -141,7 +141,7 @@ export default function QuizScreen() {
 
   return (
     <PageTransition>
-      <div className={`min-h-screen bg-gradient-to-b ${bgClass} flex flex-col transition-colors duration-500`}>
+      <div className={`min-h-screen bg-gradient-to-b ${bgClass} flex flex-col transition-colors duration-500 font-sans antialiased`}>
         {/* Sticky header */}
         <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-gray-100">
           <div className="max-w-2xl mx-auto px-5 py-3">
@@ -188,13 +188,13 @@ export default function QuizScreen() {
               transition={{ duration: 0.3 }}
             >
               {/* Question card */}
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6 mb-6">
+              <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-[0_4px_16px_rgba(165,0,100,0.12)] px-6 py-8 mb-6">
                 {question.context && (
-                  <p className="text-sm italic text-[#999999] mb-3 leading-relaxed">
+                  <p className="text-base md:text-lg font-medium text-gray-600 mb-4 leading-relaxed text-center">
                     {question.context}
                   </p>
                 )}
-                <p className="text-lg md:text-xl font-semibold text-[#1A1A1A] leading-relaxed">
+                <p className="text-xl md:text-2xl font-bold text-gray-900 leading-snug text-center">
                   {question.text}
                 </p>
               </div>
@@ -208,7 +208,7 @@ export default function QuizScreen() {
                       key={answer.id}
                       onClick={() => handleSelect(answer)}
                       disabled={animState !== 'idle'}
-                      className={`w-full text-left px-5 py-4 rounded-2xl border-2 transition-colors cursor-pointer ${
+                      className={`w-full text-left px-6 py-4 rounded-2xl border-2 transition-colors cursor-pointer ${
                         isSelected
                           ? 'border-momo bg-momo-soft shadow-[0_4px_16px_rgba(165,0,100,0.12)]'
                           : 'border-gray-200 bg-white hover:border-momo-light hover:bg-momo-soft/50'
@@ -230,7 +230,7 @@ export default function QuizScreen() {
                         >
                           {answer.id}
                         </motion.span>
-                        <span className="text-[#1A1A1A] text-sm md:text-base leading-relaxed pt-0.5">
+                        <span className="text-gray-800 text-base font-semibold leading-relaxed pt-0.5">
                           {answer.text}
                         </span>
                       </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import useGameStore from '../store/gameStore';
@@ -26,6 +26,7 @@ export default function QuizScreen() {
   const [animState, setAnimState] = useState('idle');
   const [selectedId, setSelectedId] = useState(null);
   const [showDivider, setShowDivider] = useState(false);
+  const dividerShownRef = useRef(false);
 
   const question = allQuestions[currentQuestion];
   const isLast = currentQuestion >= TOTAL - 1;
@@ -53,14 +54,15 @@ export default function QuizScreen() {
   }, [currentQuestion, navigate]);
 
   useEffect(() => {
-    if (currentQuestion === SECTION_A_COUNT && !showDivider) {
+    if (currentQuestion === SECTION_A_COUNT && !dividerShownRef.current) {
+      dividerShownRef.current = true;
       setShowDivider(true);
       const timer = setTimeout(() => {
         setShowDivider(false);
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [currentQuestion, showDivider]);
+  }, [currentQuestion]);
 
   if (showDivider) {
     return (
@@ -94,7 +96,15 @@ export default function QuizScreen() {
     );
   }
 
-  if (!question || !sectionInfo) return null;
+  console.log('Section:', sectionInfo?.idx, 'Question:', currentQuestion, 'Total in section:', sectionInfo?.total, 'showDivider:', showDivider);
+
+  if (!question || !sectionInfo) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Đang tải câu hỏi...
+      </div>
+    );
+  }
 
   const bgClass = SECTION_BG[sectionInfo.id] || SECTION_BG.section_a;
 

@@ -14,6 +14,15 @@ const YEARS = [
 ];
 const GRAD_YEARS = ['2025', '2026', '2027', '2028+'];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+
 export default function InputScreen() {
   const navigate = useNavigate();
   const setUserContext = useGameStore((s) => s.setUserContext);
@@ -49,7 +58,7 @@ export default function InputScreen() {
   }
 
   const fieldClass = (key) =>
-    `w-full px-4 py-3 rounded-xl border-2 text-base transition-colors outline-none ${
+    `w-full px-4 py-3.5 rounded-2xl border-2 text-base font-medium transition-colors outline-none ${
       errors[key]
         ? 'border-momo-error bg-red-50'
         : 'border-gray-200 bg-white focus:border-momo'
@@ -57,130 +66,151 @@ export default function InputScreen() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 bg-gradient-to-b from-momo-soft via-white to-white">
-        {/* Logo */}
-        <motion.h2
-          className="text-[32px] font-bold text-momo mb-6 tracking-tight"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
+      <div className="min-h-screen flex flex-col items-center px-6 py-12 bg-gradient-to-b from-momo-soft via-white to-white font-sans antialiased">
+        <motion.div
+          className="flex flex-col items-center max-w-md w-full"
+          variants={stagger}
+          initial="hidden"
+          animate="show"
         >
-          GenPath 💗
-        </motion.h2>
-
-        {/* Header */}
-        <div className="text-4xl mb-4">&#9997;&#65039;</div>
-        <h1 className="text-[28px] md:text-[32px] font-bold text-[#1A1A1A] text-center mb-2">
-          Trước khi bắt đầu...
-        </h1>
-        <p className="text-[#666666] text-center mb-8 max-w-sm">
-          Cho mình biết thêm về bạn nhé!
-        </p>
-
-        {/* Card */}
-        <motion.form
-          onSubmit={handleSubmit}
-          className="w-full max-w-md bg-white rounded-2xl shadow-[0_4px_16px_rgba(165,0,100,0.12)] border border-gray-100 p-8 space-y-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {/* Name */}
-          <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
-              Tên của bạn
-            </label>
-            <input
-              type="text"
-              placeholder="VD: Minh Anh"
-              value={name}
-              onChange={(e) => { setName(e.target.value); setErrors((p) => ({ ...p, name: false })); }}
-              className={fieldClass('name')}
-            />
-            {errors.name && <p className="text-xs text-momo-error mt-1">Vui lòng nhập tên</p>}
-          </div>
-
-          {/* Major */}
-          <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
-              Ngành học
-            </label>
-            <select
-              value={major}
-              onChange={(e) => { setMajor(e.target.value); setErrors((p) => ({ ...p, major: false })); }}
-              className={fieldClass('major')}
-            >
-              <option value="">-- Chọn ngành --</option>
-              {MAJORS.map((m) => (
-                <option key={m} value={m}>{m}</option>
-              ))}
-            </select>
-            {errors.major && <p className="text-xs text-momo-error mt-1">Vui lòng chọn ngành học</p>}
-          </div>
-
-          {/* Current Year */}
-          <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-              Bạn đang ở năm mấy?
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {YEARS.map((y) => (
-                <motion.button
-                  key={y.value}
-                  type="button"
-                  onClick={() => { setCurrentYear(y.value); setErrors((p) => ({ ...p, currentYear: false })); }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-all cursor-pointer ${
-                    currentYear === y.value
-                      ? 'border-momo bg-momo-soft text-momo-dark'
-                      : errors.currentYear
-                        ? 'border-red-300 bg-red-50 text-[#666666]'
-                        : 'border-gray-200 bg-gray-50 text-[#666666] hover:border-gray-300'
-                  }`}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {y.label}
-                </motion.button>
-              ))}
-            </div>
-            {errors.currentYear && <p className="text-xs text-momo-error mt-1">Vui lòng chọn năm học</p>}
-          </div>
-
-          {/* Graduation Year */}
-          <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
-              Năm ra trường dự kiến
-            </label>
-            <select
-              value={gradYear}
-              onChange={(e) => { setGradYear(e.target.value); setErrors((p) => ({ ...p, gradYear: false })); }}
-              className={fieldClass('gradYear')}
-            >
-              <option value="">-- Chọn năm --</option>
-              {GRAD_YEARS.map((g) => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-            {errors.gradYear && <p className="text-xs text-momo-error mt-1">Vui lòng chọn năm ra trường</p>}
-          </div>
-
-          {/* Submit */}
-          <motion.button
-            type="submit"
-            className="w-full bg-momo hover:bg-momo-light text-white font-semibold text-lg py-4 rounded-2xl shadow-[0_4px_16px_rgba(165,0,100,0.12)] hover:shadow-[0_8px_32px_rgba(165,0,100,0.16)] transition-all cursor-pointer"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          {/* Logo */}
+          <motion.h2
+            className="text-2xl md:text-3xl font-extrabold text-momo tracking-tight"
+            variants={fadeUp}
           >
-            Tiếp tục &rarr;
-          </motion.button>
-        </motion.form>
+            StudentPath 🎓
+          </motion.h2>
 
-        {/* Step indicator */}
-        <div className="flex items-center gap-2 mt-8">
-          <span className="w-8 h-1.5 rounded-full bg-momo" />
-          <span className="w-8 h-1.5 rounded-full bg-gray-200" />
-          <span className="w-8 h-1.5 rounded-full bg-gray-200" />
-          <span className="w-8 h-1.5 rounded-full bg-gray-200" />
-        </div>
+          {/* Header */}
+          <motion.div className="text-center mt-6 mb-2" variants={fadeUp}>
+            <span className="text-5xl" role="img" aria-label="pen">✏️</span>
+          </motion.div>
+          <motion.h1
+            className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] text-center tracking-tight"
+            variants={fadeUp}
+          >
+            Trước khi bắt đầu...
+          </motion.h1>
+          <motion.p
+            className="text-base font-medium text-gray-600 text-center mt-2 mb-8"
+            variants={fadeUp}
+          >
+            Cho mình biết thêm về bạn nhé!
+          </motion.p>
+
+          {/* Form card */}
+          <motion.form
+            onSubmit={handleSubmit}
+            className="w-full bg-white rounded-2xl shadow-[0_4px_20px_rgba(165,0,100,0.08)] border-2 border-momo-soft p-6 md:p-8 space-y-6"
+            variants={fadeUp}
+          >
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-semibold text-[#1A1A1A] mb-2">
+                Tên của bạn
+              </label>
+              <input
+                type="text"
+                placeholder="VD: Minh Anh"
+                value={name}
+                onChange={(e) => { setName(e.target.value); setErrors((p) => ({ ...p, name: false })); }}
+                className={fieldClass('name')}
+              />
+              {errors.name && <p className="text-xs font-medium text-momo-error mt-1.5">Vui lòng nhập tên</p>}
+            </div>
+
+            {/* Major */}
+            <div>
+              <label className="block text-sm font-semibold text-[#1A1A1A] mb-2">
+                Ngành học
+              </label>
+              <select
+                value={major}
+                onChange={(e) => { setMajor(e.target.value); setErrors((p) => ({ ...p, major: false })); }}
+                className={fieldClass('major')}
+              >
+                <option value="">-- Chọn ngành --</option>
+                {MAJORS.map((m) => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
+              </select>
+              {errors.major && <p className="text-xs font-medium text-momo-error mt-1.5">Vui lòng chọn ngành học</p>}
+            </div>
+
+            {/* Current Year */}
+            <div>
+              <label className="block text-sm font-semibold text-[#1A1A1A] mb-2.5">
+                Bạn đang ở năm mấy?
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {YEARS.map((y) => (
+                  <motion.button
+                    key={y.value}
+                    type="button"
+                    onClick={() => { setCurrentYear(y.value); setErrors((p) => ({ ...p, currentYear: false })); }}
+                    className={`px-4 py-2.5 rounded-full text-sm font-semibold border-2 transition-all cursor-pointer ${
+                      currentYear === y.value
+                        ? 'border-momo bg-momo-soft text-momo'
+                        : errors.currentYear
+                          ? 'border-red-300 bg-red-50 text-gray-500'
+                          : 'border-gray-200 bg-[#F8F8F8] text-gray-600 hover:border-gray-300'
+                    }`}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {y.label}
+                  </motion.button>
+                ))}
+              </div>
+              {errors.currentYear && <p className="text-xs font-medium text-momo-error mt-1.5">Vui lòng chọn năm học</p>}
+            </div>
+
+            {/* Graduation Year */}
+            <div>
+              <label className="block text-sm font-semibold text-[#1A1A1A] mb-2">
+                Năm ra trường dự kiến
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {GRAD_YEARS.map((g) => (
+                  <motion.button
+                    key={g}
+                    type="button"
+                    onClick={() => { setGradYear(g); setErrors((p) => ({ ...p, gradYear: false })); }}
+                    className={`px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all cursor-pointer ${
+                      gradYear === g
+                        ? 'border-momo bg-momo-soft text-momo'
+                        : errors.gradYear
+                          ? 'border-red-300 bg-red-50 text-gray-500'
+                          : 'border-gray-200 bg-[#F8F8F8] text-gray-600 hover:border-gray-300'
+                    }`}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {g}
+                  </motion.button>
+                ))}
+              </div>
+              {errors.gradYear && <p className="text-xs font-medium text-momo-error mt-1.5">Vui lòng chọn năm ra trường</p>}
+            </div>
+
+            {/* Submit */}
+            <motion.button
+              type="submit"
+              className="w-full bg-momo hover:bg-momo-light text-white font-bold text-lg py-4 rounded-full shadow-[0_0_24px_rgba(216,45,139,0.3)] hover:shadow-[0_0_32px_rgba(216,45,139,0.4)] transition-all cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              aria-label="Tiếp tục"
+            >
+              Tiếp tục &rarr;
+            </motion.button>
+          </motion.form>
+
+          {/* Step indicator */}
+          <motion.div className="flex items-center gap-2 mt-8" variants={fadeUp}>
+            <span className="w-8 h-2 rounded-full bg-momo" />
+            <span className="w-8 h-2 rounded-full bg-gray-200" />
+            <span className="w-8 h-2 rounded-full bg-gray-200" />
+            <span className="w-8 h-2 rounded-full bg-gray-200" />
+          </motion.div>
+        </motion.div>
       </div>
     </PageTransition>
   );

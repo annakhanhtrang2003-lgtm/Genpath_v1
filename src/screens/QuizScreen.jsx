@@ -66,7 +66,7 @@ export default function QuizScreen() {
 
   if (showDivider) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#E3F2FD] to-white flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen bg-gradient-to-b from-[#E3F2FD] to-white flex flex-col items-center justify-center px-6 font-sans antialiased">
         <motion.div
           className="text-center space-y-4"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -81,26 +81,24 @@ export default function QuizScreen() {
           >
             ✅
           </motion.div>
-          <h2 className="text-2xl md:text-[28px] font-bold text-[#1A1A1A]">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight">
             Hoàn thành Phần 1!
           </h2>
-          <p className="text-base text-[#666666]">
+          <p className="text-base font-medium text-gray-600">
             Bây giờ khám phá Phần 2...
           </p>
           <div className="flex items-center justify-center gap-2 pt-2">
             <span className="text-2xl">{sections[1].icon}</span>
-            <span className="text-sm font-medium text-momo-info">{sections[1].title}</span>
+            <span className="text-sm font-semibold text-momo-info">{sections[1].title}</span>
           </div>
         </motion.div>
       </div>
     );
   }
 
-  console.log('Section:', sectionInfo?.idx, 'Question:', currentQuestion, 'Total in section:', sectionInfo?.total, 'showDivider:', showDivider);
-
   if (!question || !sectionInfo) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
+      <div className="min-h-screen flex items-center justify-center text-gray-500 font-sans">
         Đang tải câu hỏi...
       </div>
     );
@@ -152,22 +150,22 @@ export default function QuizScreen() {
                   {sectionInfo.title}
                 </span>
               </div>
-              <span className="text-sm font-medium text-[#999999]">
+              <span className="text-sm font-semibold text-gray-500">
                 Câu {currentQuestion + 1}/{TOTAL}
               </span>
             </div>
 
             <div className="flex gap-1.5">
-              <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-momo rounded-full"
+                  className="h-full bg-gradient-to-r from-momo to-momo-light rounded-full"
                   animate={{ width: `${sectionAProgress}%` }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
                 />
               </div>
-              <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-momo-info rounded-full"
+                  className="h-full bg-gradient-to-r from-momo-info to-[#90CAF9] rounded-full"
                   animate={{ width: `${sectionBProgress}%` }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
                 />
@@ -188,18 +186,18 @@ export default function QuizScreen() {
               transition={{ duration: 0.3 }}
             >
               {/* Question card */}
-              <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-[0_4px_16px_rgba(165,0,100,0.12)] px-6 py-8 mb-6">
+              <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-[0_4px_20px_rgba(165,0,100,0.08)] border-2 border-momo-soft px-6 py-8 mb-6">
                 {question.context && (
                   <p className="text-base md:text-lg font-medium text-gray-600 mb-4 leading-relaxed text-center">
                     {question.context}
                   </p>
                 )}
-                <p className="text-xl md:text-2xl font-bold text-gray-900 leading-snug text-center">
+                <p className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] leading-snug text-center tracking-tight">
                   {question.text}
                 </p>
               </div>
 
-              {/* Answer buttons — stagger */}
+              {/* Answer buttons */}
               <div className="space-y-3">
                 {question.answers.map((answer, idx) => {
                   const isSelected = selectedId === answer.id;
@@ -210,7 +208,7 @@ export default function QuizScreen() {
                       disabled={animState !== 'idle'}
                       className={`w-full text-left px-6 py-4 rounded-2xl border-2 transition-colors cursor-pointer ${
                         isSelected
-                          ? 'border-momo bg-momo-soft shadow-[0_4px_16px_rgba(165,0,100,0.12)]'
+                          ? 'border-momo bg-momo-soft shadow-[0_4px_20px_rgba(165,0,100,0.12)]'
                           : 'border-gray-200 bg-white hover:border-momo-light hover:bg-momo-soft/50'
                       } ${animState !== 'idle' && !isSelected ? 'opacity-50' : ''}`}
                       initial={{ opacity: 0, y: 15 }}
@@ -220,17 +218,17 @@ export default function QuizScreen() {
                     >
                       <div className="flex items-start gap-3">
                         <motion.span
-                          className={`shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center text-sm font-semibold transition-colors ${
+                          className={`shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-bold transition-colors ${
                             isSelected
                               ? 'border-momo bg-momo text-white'
-                              : 'border-gray-300 text-[#999999]'
+                              : 'border-gray-300 text-gray-500'
                           }`}
                           animate={isSelected ? { scale: [1, 1.2, 1] } : {}}
                           transition={{ duration: 0.3 }}
                         >
                           {answer.id}
                         </motion.span>
-                        <span className="text-gray-800 text-base font-semibold leading-relaxed pt-0.5">
+                        <span className="text-[#1A1A1A] text-base font-semibold leading-relaxed pt-0.5">
                           {answer.text}
                         </span>
                       </div>

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import useGameStore from '../store/gameStore';
 import roadmapData from '../data/roadmap_template.json';
 import AnimatedCat from '../components/AnimatedCat';
@@ -82,27 +82,27 @@ const BREED_DISPLAY = {
 };
 
 const LAYER_A_LABELS = {
-  A1: 'Hướng nội ↔ Hướng ngoại',
-  A2: 'Trực giác ↔ Phân tích',
-  A3: 'Tự chủ ↔ Đồng cảm',
-  A4: 'Suy ngẫm ↔ Hành động',
-  A5: 'Linh hoạt ↔ Có cấu trúc',
+  A1: { label: 'Hướng nội ↔ Hướng ngoại', left: 'Hướng nội', right: 'Hướng ngoại' },
+  A2: { label: 'Trực giác ↔ Phân tích', left: 'Trực giác', right: 'Phân tích' },
+  A3: { label: 'Tự chủ ↔ Đồng cảm', left: 'Tự chủ', right: 'Đồng cảm' },
+  A4: { label: 'Suy ngẫm ↔ Hành động', left: 'Suy ngẫm', right: 'Hành động' },
+  A5: { label: 'Linh hoạt ↔ Có cấu trúc', left: 'Linh hoạt', right: 'Có cấu trúc' },
 };
 
 const DRIVE_LABELS = {
-  BUILD: { label: 'Xây Dựng', color: 'bg-blue-100 text-blue-700' },
-  CONNECT: { label: 'Kết Nối', color: 'bg-momo-soft text-momo' },
-  SOLVE: { label: 'Giải Quyết', color: 'bg-emerald-100 text-emerald-700' },
-  CREATE: { label: 'Sáng Tạo', color: 'bg-amber-100 text-amber-700' },
-  EXPRESS: { label: 'Thể Hiện', color: 'bg-violet-100 text-violet-700' },
+  BUILD: { label: 'Xây Dựng', emoji: '🏗️', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+  CONNECT: { label: 'Kết Nối', emoji: '🤝', color: 'bg-momo-soft text-momo border-momo-soft' },
+  SOLVE: { label: 'Giải Quyết', emoji: '🧩', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+  CREATE: { label: 'Sáng Tạo', emoji: '🎨', color: 'bg-amber-100 text-amber-700 border-amber-200' },
+  EXPRESS: { label: 'Thể Hiện', emoji: '🎤', color: 'bg-violet-100 text-violet-700 border-violet-200' },
 };
 
 const APTITUDE_LABELS = {
-  Verbal: 'Ngôn ngữ',
-  Numerical: 'Toán học',
-  Systems: 'Hệ thống',
-  Interpersonal: 'Giao tiếp',
-  VisualCreative: 'Sáng tạo thị giác',
+  Verbal: { label: 'Ngôn ngữ', emoji: '📝' },
+  Numerical: { label: 'Toán học', emoji: '🔢' },
+  Systems: { label: 'Hệ thống', emoji: '⚙️' },
+  Interpersonal: { label: 'Giao tiếp', emoji: '💬' },
+  VisualCreative: { label: 'Sáng tạo thị giác', emoji: '🎨' },
 };
 
 // ─── Count-up hook ───────────────────────────────────────────
@@ -124,21 +124,39 @@ function useCountUp(target, duration = 1000, start = false) {
   return value;
 }
 
+// ─── Section wrapper with useInView ──────────────────────────
+function Section({ children, className = '', delay = 0 }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 // ─── Sub-components ──────────────────────────────────────────
 
 function CatReveal({ breedId, breedDisplay, roadmapTemplate, revealed }) {
   return (
     <motion.div
-      className="text-center"
+      className="text-center py-12 md:py-20"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={revealed ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
     >
-      <div className="mb-4">
-        <AnimatedCat breed={breedId} size={100} mood={revealed ? 'happy' : 'idle'} />
+      <div className="mb-6">
+        <AnimatedCat breed={breedId} size={120} mood={revealed ? 'happy' : 'idle'} />
       </div>
       <motion.h1
-        className="text-[28px] md:text-[32px] font-bold text-[#1A1A1A] mb-2"
+        className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] mb-3 tracking-tight"
         initial={{ opacity: 0, y: 10 }}
         animate={revealed ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.3 }}
@@ -146,7 +164,7 @@ function CatReveal({ breedId, breedDisplay, roadmapTemplate, revealed }) {
         {roadmapTemplate?.breed_name || breedId}
       </motion.h1>
       <motion.p
-        className="text-lg text-momo font-medium mb-4"
+        className="text-xl md:text-2xl text-momo font-bold mb-6"
         initial={{ opacity: 0 }}
         animate={revealed ? { opacity: 1 } : {}}
         transition={{ delay: 0.5 }}
@@ -154,37 +172,38 @@ function CatReveal({ breedId, breedDisplay, roadmapTemplate, revealed }) {
         {roadmapTemplate?.tagline}
       </motion.p>
       <motion.p
-        className="text-[#666666] leading-relaxed max-w-lg mx-auto"
+        className="text-base md:text-lg font-medium text-gray-600 leading-relaxed max-w-lg mx-auto"
         initial={{ opacity: 0 }}
         animate={revealed ? { opacity: 1 } : {}}
         transition={{ delay: 0.7 }}
       >
         {breedDisplay.description}
       </motion.p>
+
+      {/* Secondary breed */}
     </motion.div>
   );
 }
 
 function PersonalityBars({ normalizedA, revealed }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const shouldAnimate = revealed && isInView;
+
   return (
-    <motion.div
-      className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={revealed ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: 0.8 }}
-    >
-      <h2 className="text-lg font-semibold text-[#1A1A1A] mb-5">
-        Tính cách của bạn
+    <div ref={ref} className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(165,0,100,0.08)] border-2 border-momo-soft p-6 md:p-8">
+      <h2 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-6 tracking-tight">
+        🧬 Tính cách của bạn
       </h2>
-      <div className="space-y-4">
-        {Object.entries(LAYER_A_LABELS).map(([key, label], i) => {
+      <div className="space-y-5">
+        {Object.entries(LAYER_A_LABELS).map(([key, meta], i) => {
           const value = normalizedA[key] ?? 50;
-          const display = useCountUp(value, 1200, revealed);
+          const display = useCountUp(value, 1200, shouldAnimate);
           return (
             <div key={key}>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm text-[#666666]">{label}</span>
-                <span className="text-sm font-semibold text-momo">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-semibold text-gray-600">{meta.label}</span>
+                <span className="text-sm font-extrabold text-momo">
                   {display}
                 </span>
               </div>
@@ -192,42 +211,48 @@ function PersonalityBars({ normalizedA, revealed }) {
                 <motion.div
                   className="h-full bg-gradient-to-r from-momo-light to-momo rounded-full"
                   initial={{ width: 0 }}
-                  animate={revealed ? { width: `${value}%` } : { width: 0 }}
-                  transition={{ duration: 1.2, delay: 0.9 + i * 0.1, ease: 'easeOut' }}
+                  animate={shouldAnimate ? { width: `${value}%` } : { width: 0 }}
+                  transition={{ duration: 1.2, delay: 0.1 + i * 0.1, ease: 'easeOut' }}
                 />
               </div>
             </div>
           );
         })}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-function TopDrives({ rankedB }) {
-  const primary = DRIVE_LABELS[rankedB.primary_drive];
-  const secondary = DRIVE_LABELS[rankedB.secondary_drive];
-
+function TopDrives({ rankedB, allDrives }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6">
-      <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">
-        Động lực chính
+    <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(165,0,100,0.08)] border-2 border-momo-soft p-6 md:p-8">
+      <h2 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-6 tracking-tight">
+        🔥 Động lực chính
       </h2>
-      <div className="flex flex-wrap gap-3">
-        <span
-          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold ${primary.color} ring-2 ring-current/20`}
-        >
-          <span className="w-2 h-2 rounded-full bg-current" />
-          {primary.label}
-          <span className="text-xs opacity-60 ml-1">Chính</span>
-        </span>
-        <span
-          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium ${secondary.color}`}
-        >
-          <span className="w-2 h-2 rounded-full bg-current opacity-60" />
-          {secondary.label}
-          <span className="text-xs opacity-60 ml-1">Phụ</span>
-        </span>
+      <div className="space-y-3">
+        {allDrives.slice(0, 3).map((d, i) => {
+          const meta = DRIVE_LABELS[d.key];
+          const isPrimary = i === 0;
+          return (
+            <div
+              key={d.key}
+              className={`flex items-center gap-4 p-4 rounded-2xl border-2 ${isPrimary ? meta.color : 'bg-[#F8F8F8] border-gray-100'}`}
+            >
+              <span className="text-2xl">{meta.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className={`text-base font-bold ${isPrimary ? '' : 'text-[#1A1A1A]'}`}>{meta.label}</span>
+                  {isPrimary && (
+                    <span className="text-[10px] font-bold bg-white/60 px-2 py-0.5 rounded-full">
+                      #1
+                    </span>
+                  )}
+                </div>
+              </div>
+              <span className="text-lg font-extrabold">{d.score}</span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -240,30 +265,35 @@ function TopAptitudes({ leveledC }) {
       level,
       rank: level === 'High' ? 3 : level === 'Mid' ? 2 : 1,
     }))
-    .sort((a, b) => b.rank - a.rank)
-    .slice(0, 2);
+    .sort((a, b) => b.rank - a.rank);
 
   const levelColors = {
-    High: 'bg-emerald-100 text-emerald-700',
-    Mid: 'bg-yellow-100 text-yellow-700',
-    Low: 'bg-gray-100 text-[#999999]',
+    High: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    Mid: 'bg-amber-100 text-amber-700 border-amber-200',
+    Low: 'bg-gray-100 text-gray-500 border-gray-200',
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6">
-      <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">
-        Năng lực nổi bật
+    <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(165,0,100,0.08)] border-2 border-momo-soft p-6 md:p-8">
+      <h2 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-6 tracking-tight">
+        💪 Năng lực nổi bật
       </h2>
-      <div className="flex flex-wrap gap-3">
-        {sorted.map(({ key, level }) => (
-          <span
-            key={key}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${levelColors[level]}`}
-          >
-            {APTITUDE_LABELS[key] || key}
-            <span className="text-xs opacity-70">{level}</span>
-          </span>
-        ))}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {sorted.map(({ key, level }) => {
+          const meta = APTITUDE_LABELS[key];
+          return (
+            <div
+              key={key}
+              className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 ${levelColors[level]}`}
+            >
+              <span className="text-2xl">{meta.emoji}</span>
+              <span className="text-sm font-bold text-center">{meta.label}</span>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-white/60">
+                {level}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -274,15 +304,15 @@ function CareerCluster({ careerCluster }) {
   const careers = careerCluster.split(',').map((c) => c.trim());
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6">
-      <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">
-        Nghề nghiệp phù hợp
+    <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(165,0,100,0.08)] border-2 border-momo-soft p-6 md:p-8">
+      <h2 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-6 tracking-tight">
+        💼 Nghề nghiệp phù hợp
       </h2>
       <div className="flex flex-wrap gap-2">
         {careers.map((career) => (
           <span
             key={career}
-            className="px-3 py-1.5 bg-momo-soft text-momo rounded-lg text-sm font-medium"
+            className="px-4 py-2 bg-momo-soft text-momo rounded-full text-sm font-bold"
           >
             {career}
           </span>
@@ -302,11 +332,11 @@ function CompatibilitySection({ compatibility }) {
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6">
-      <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">
-        Tương thích với các giống mèo khác
+    <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(165,0,100,0.08)] border-2 border-momo-soft p-6 md:p-8">
+      <h2 className="text-xl md:text-2xl font-extrabold text-[#1A1A1A] mb-6 tracking-tight">
+        🐾 Tương thích
       </h2>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {types.map(({ key, label, emoji, desc }) => {
           const match = compatibility[key];
           if (!match) return null;
@@ -316,22 +346,20 @@ function CompatibilitySection({ compatibility }) {
           return (
             <motion.div
               key={key}
-              className="flex items-start gap-3 p-3 rounded-xl bg-[#F8F8F8]"
+              className="flex items-start gap-4 p-4 rounded-2xl bg-[#F8F8F8] border border-gray-100"
               whileHover={{ scale: 1.01 }}
             >
-              <span className="text-2xl shrink-0">{emoji}</span>
+              <span className="text-3xl shrink-0">{emoji}</span>
               <div className="min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-sm font-semibold text-[#1A1A1A]">
-                    {label}
-                  </span>
-                  <span className="text-xs text-[#999999]">{desc}</span>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-sm font-bold text-[#1A1A1A]">{label}</span>
+                  <span className="text-xs font-medium text-gray-500">{desc}</span>
                 </div>
-                <p className="text-sm font-medium text-momo">
+                <p className="text-sm font-bold text-momo">
                   {matchDisplay?.emoji}{' '}
                   {matchTemplate?.breed_name || match.id}
                 </p>
-                <p className="text-xs text-[#666666] mt-0.5">{match.reason}</p>
+                <p className="text-sm font-medium text-gray-600 mt-0.5">{match.reason}</p>
               </div>
             </motion.div>
           );
@@ -378,12 +406,12 @@ export default function ResultScreen() {
   }
 
   const LAYER_B_KEYS = ['BUILD', 'CONNECT', 'SOLVE', 'CREATE', 'EXPRESS'];
-  const drives = LAYER_B_KEYS
+  const allDrives = LAYER_B_KEYS
     .map((key) => ({ key, score: rawScores[key] || 0 }))
     .sort((a, b) => b.score - a.score);
   const rankedB = {
-    primary_drive: drives[0].key,
-    secondary_drive: drives[1].key,
+    primary_drive: allDrives[0].key,
+    secondary_drive: allDrives[1].key,
   };
 
   const LAYER_C_KEYS = ['Verbal', 'Numerical', 'Systems', 'Interpersonal', 'VisualCreative'];
@@ -395,27 +423,21 @@ export default function ResultScreen() {
     leveledC[key] = ratio >= 0.66 ? 'High' : ratio >= 0.33 ? 'Mid' : 'Low';
   }
 
-  const sectionStagger = (index) => ({
-    initial: { opacity: 0, y: 20 },
-    animate: revealed ? { opacity: 1, y: 0 } : {},
-    transition: { delay: 1 + index * 0.15 },
-  });
-
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-b from-momo-soft via-white to-white">
+      <div className="min-h-screen bg-gradient-to-b from-momo-soft via-white to-white font-sans antialiased">
         {showConfetti && <Confetti />}
 
         {/* Top accent */}
-        <div className="w-full h-2 bg-gradient-to-r from-momo via-momo-light to-momo-warning" />
+        <div className="w-full h-1.5 bg-gradient-to-r from-momo via-momo-light to-momo-warning" />
 
-        <div className="max-w-2xl mx-auto px-5 py-10 space-y-6">
+        <div className="max-w-2xl mx-auto px-5 py-6">
           {/* Logo */}
-          <h2 className="text-[32px] font-bold text-momo text-center tracking-tight">
-            GenPath 💗
+          <h2 className="text-2xl md:text-3xl font-extrabold text-momo text-center tracking-tight">
+            StudentPath 🎓
           </h2>
 
-          {/* 1. Cat Reveal */}
+          {/* 1. Cat Reveal — full viewport hero */}
           <CatReveal
             breedId={breedId}
             breedDisplay={breedDisplay}
@@ -423,16 +445,16 @@ export default function ResultScreen() {
             revealed={revealed}
           />
 
-          {/* Secondary breed mention */}
+          {/* Secondary breed */}
           {quizResult.secondary && (
             <motion.p
-              className="text-center text-sm text-[#999999]"
+              className="text-center text-sm font-semibold text-gray-500 -mt-8 mb-8"
               initial={{ opacity: 0 }}
               animate={revealed ? { opacity: 1 } : {}}
               transition={{ delay: 0.9 }}
             >
               Giống phụ:{' '}
-              <span className="font-medium text-[#666666]">
+              <span className="font-bold text-gray-700">
                 {BREED_DISPLAY[quizResult.secondary]?.emoji}{' '}
                 {roadmapData.roadmap_templates[quizResult.secondary]?.breed_name ||
                   quizResult.secondary}
@@ -440,51 +462,57 @@ export default function ResultScreen() {
             </motion.p>
           )}
 
-          {/* 2. Personality Bars */}
-          <PersonalityBars normalizedA={normalizedA} revealed={revealed} />
+          {/* Scrollable sections with stagger */}
+          <div className="space-y-6">
+            {/* 2. Personality Bars */}
+            <Section>
+              <PersonalityBars normalizedA={normalizedA} revealed={revealed} />
+            </Section>
 
-          {/* 3. Top Drives */}
-          <motion.div {...sectionStagger(0)}>
-            <TopDrives rankedB={rankedB} />
-          </motion.div>
+            {/* 3. Top Drives */}
+            <Section delay={0.1}>
+              <TopDrives rankedB={rankedB} allDrives={allDrives} />
+            </Section>
 
-          {/* 4. Top Aptitudes */}
-          <motion.div {...sectionStagger(1)}>
-            <TopAptitudes leveledC={leveledC} />
-          </motion.div>
+            {/* 4. Top Aptitudes */}
+            <Section delay={0.1}>
+              <TopAptitudes leveledC={leveledC} />
+            </Section>
 
-          {/* 5. Career Cluster */}
-          <motion.div {...sectionStagger(2)}>
-            <CareerCluster careerCluster={roadmapTemplate?.career_cluster} />
-          </motion.div>
+            {/* 5. Career Cluster */}
+            <Section delay={0.1}>
+              <CareerCluster careerCluster={roadmapTemplate?.career_cluster} />
+            </Section>
 
-          {/* 6. Compatibility */}
-          <motion.div {...sectionStagger(3)}>
-            <CompatibilitySection compatibility={breedDisplay.compatibility} />
-          </motion.div>
+            {/* 6. Compatibility */}
+            <Section delay={0.1}>
+              <CompatibilitySection compatibility={breedDisplay.compatibility} />
+            </Section>
 
-          {/* Action buttons */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-3 pt-4 pb-8"
-            {...sectionStagger(4)}
-          >
-            <motion.button
-              onClick={() => navigate('/forecast')}
-              className="flex-1 bg-momo hover:bg-momo-light text-white font-semibold py-4 px-8 rounded-2xl shadow-[0_4px_16px_rgba(165,0,100,0.12)] hover:shadow-[0_8px_32px_rgba(165,0,100,0.16)] transition-all cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Xem dự báo nghề nghiệp
-            </motion.button>
-            <motion.button
-              onClick={() => navigate('/roadmap')}
-              className="flex-1 bg-white hover:bg-[#F8F8F8] text-momo font-semibold py-4 px-8 rounded-2xl border-2 border-momo-soft hover:border-momo-light shadow-[0_2px_8px_rgba(165,0,100,0.08)] transition-all cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Xem lộ trình kỹ năng
-            </motion.button>
-          </motion.div>
+            {/* Action buttons */}
+            <Section delay={0.1}>
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 pb-8">
+                <motion.button
+                  onClick={() => navigate('/forecast')}
+                  className="flex-1 bg-momo hover:bg-momo-light text-white font-bold py-4 px-8 rounded-full shadow-[0_0_24px_rgba(216,45,139,0.3)] hover:shadow-[0_0_32px_rgba(216,45,139,0.4)] transition-all cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  aria-label="Xem dự báo nghề nghiệp"
+                >
+                  Xem dự báo nghề nghiệp &rarr;
+                </motion.button>
+                <motion.button
+                  onClick={() => navigate('/roadmap')}
+                  className="flex-1 bg-white hover:bg-[#F8F8F8] text-momo font-bold py-4 px-8 rounded-full border-2 border-momo-soft hover:border-momo-light transition-all cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  aria-label="Xem lộ trình kỹ năng"
+                >
+                  Xem lộ trình kỹ năng
+                </motion.button>
+              </div>
+            </Section>
+          </div>
         </div>
       </div>
     </PageTransition>

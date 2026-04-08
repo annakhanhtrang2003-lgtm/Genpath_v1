@@ -1,0 +1,449 @@
+{
+  "meta": {
+    "version": "2.0",
+    "source": "genpath-v2-logic.pdf — pages 10-13, 34-38",
+    "resource_source": "PDF pages 12-13 (Learning Resources Curated)",
+    "warning": "Resources chỉ dùng từ danh sách trong PDF. URLs cần verify trước khi deploy."
+  },
+
+  "priority_logic": {
+    "_doc": "Giải quyết vấn đề quá nhiều skills cùng Priority 1 khi merge breed + major overlays",
+
+    "algorithm": {
+      "step_1": {
+        "name": "Primary Sort: priority",
+        "rule": "priority 1 (must-have) → 2 (strong advantage) → 3 (nice-to-have)",
+        "type": "ascending"
+      },
+      "step_2": {
+        "name": "Secondary Sort: time_estimate_weeks",
+        "rule": "Within same priority, shorter skills first — user sees quick progress early",
+        "type": "ascending",
+        "rationale": "Giúp user hoàn thành skill nhanh nhất trước → motivation loop"
+      },
+      "step_3": {
+        "name": "Tertiary Sort: is_quick_win",
+        "rule": "Within same priority + time: quick_wins (true) hiện trước non-quick-wins",
+        "type": "boolean, true first"
+      },
+      "step_4": {
+        "name": "Quaternary Sort: category weight",
+        "rule": "core > tool > power > soft (within same priority/time/quickwin)",
+        "category_weights": { "core": 4, "tool": 3, "power": 2, "soft": 1 }
+      }
+    },
+
+    "implementation": "function sortSkills(skills) {\n  const catWeight = { core: 4, tool: 3, power: 2, soft: 1 };\n  return skills.sort((a, b) => {\n    // Step 1: priority ascending\n    if (a.priority !== b.priority) return a.priority - b.priority;\n    // Step 2: time ascending\n    if (a.time_estimate_weeks !== b.time_estimate_weeks) return a.time_estimate_weeks - b.time_estimate_weeks;\n    // Step 3: quick_win first\n    if (a.is_quick_win !== b.is_quick_win) return a.is_quick_win ? -1 : 1;\n    // Step 4: category weight descending\n    return (catWeight[b.category] || 0) - (catWeight[a.category] || 0);\n  });\n}",
+
+    "max_priority_1_per_phase": 3,
+    "rule": "Nếu sau merge (breed + major) có > 3 skills priority 1 trong 1 phase → auto-demote skill có time_estimate_weeks cao nhất xuống priority 2",
+    "overflow_implementation": "function enforceMaxPriority(skills, maxP1PerPhase = 3) {\n  const p1 = skills.filter(s => s.priority === 1).sort((a,b) => b.time_estimate_weeks - a.time_estimate_weeks);\n  while (p1.length > maxP1PerPhase) {\n    const demoted = p1.shift();\n    demoted.priority = 2;\n    demoted.priority_note = 'Auto-demoted: quá nhiều P1 trong phase';\n  }\n  return skills;\n}"
+  },
+
+  "curated_resources": {
+    "_doc": "Danh sách từ PDF page 12-13. KHÔNG thêm nguồn ngoài danh sách này.",
+    "free": [
+      { "id": "coursera_audit", "name": "Coursera (audit miễn phí)", "url": "https://www.coursera.org/", "type": "course", "cost": "free", "language": "en" },
+      { "id": "kaggle_learn", "name": "Kaggle Learn — Data Science, ML", "url": "https://www.kaggle.com/learn", "type": "course", "cost": "free", "language": "en" },
+      { "id": "google_digital_garage", "name": "Google Digital Garage — Marketing, Analytics", "url": "https://learndigital.withgoogle.com/digitalgarage", "type": "course", "cost": "free", "language": "en" },
+      { "id": "meta_blueprint", "name": "Meta Blueprint — Facebook/Instagram Ads", "url": "https://www.facebook.com/business/learn", "type": "cert", "cost": "free", "language": "en" },
+      { "id": "yt_fireship", "name": "YouTube: Fireship", "url": "https://www.youtube.com/@Fireship", "type": "video", "cost": "free", "language": "en" },
+      { "id": "yt_traversy", "name": "YouTube: Traversy Media", "url": "https://www.youtube.com/@TraversyMedia", "type": "video", "cost": "free", "language": "en" },
+      { "id": "yt_alex_analyst", "name": "YouTube: Alex The Analyst", "url": "https://www.youtube.com/@AlexTheAnalyst", "type": "video", "cost": "free", "language": "en" },
+      { "id": "github_student", "name": "GitHub Student Pack", "url": "https://education.github.com/pack", "type": "tool", "cost": "free", "language": "en", "note": "cần email edu" },
+      { "id": "aiesec", "name": "AIESEC", "url": "https://aiesec.org/", "type": "community", "cost": "free", "language": "both" },
+      { "id": "ivolunteer", "name": "IVolunteer", "url": "https://ivolunteer.vn/", "type": "community", "cost": "free", "language": "vi" },
+      { "id": "viblo", "name": "Viblo — technical writing community VN", "url": "https://viblo.asia/", "type": "community", "cost": "free", "language": "vi" },
+      { "id": "devto", "name": "Dev.to", "url": "https://dev.to/", "type": "community", "cost": "free", "language": "en" },
+      { "id": "figma_free", "name": "Figma — free cho individual", "url": "https://www.figma.com/", "type": "tool", "cost": "free", "language": "en" },
+      { "id": "canva_edu", "name": "Canva Pro — free cho edu email", "url": "https://www.canva.com/education/", "type": "tool", "cost": "free", "language": "both", "note": "cần email edu" }
+    ],
+    "paid": [
+      { "id": "coursera_spec", "name": "Coursera Specializations", "url": "https://www.coursera.org/", "type": "course", "cost": "paid", "cost_detail": "~200k/tháng (audit hoặc financial aid)", "language": "en" },
+      { "id": "udemy", "name": "Udemy", "url": "https://www.udemy.com/", "type": "course", "cost": "paid", "cost_detail": "200-400k/khóa (thường sale 90%)", "language": "en" },
+      { "id": "datacamp", "name": "DataCamp", "url": "https://www.datacamp.com/", "type": "course", "cost": "paid", "cost_detail": "~150k/tháng — tốt nhất cho data path", "language": "en" },
+      { "id": "linkedin_learning", "name": "LinkedIn Learning", "url": "https://www.linkedin.com/learning/", "type": "course", "cost": "paid", "cost_detail": "free nếu có tài khoản Premium", "language": "en" },
+      { "id": "notion_obsidian", "name": "Notion/Obsidian — PKM tools", "url": "https://www.notion.so/", "type": "tool", "cost": "freemium", "language": "both" }
+    ]
+  },
+
+  "roadmap_templates": {
+    "tabby": {
+      "breed_id": "tabby",
+      "breed_name": "Mèo Mướp",
+      "tagline": "Người kiến tạo trật tự từ hỗn loạn",
+      "career_cluster": "PM, Operations, Finance, QA, Logistics",
+      "dominant_profile": { "layer_a": "A2↑ A5↑", "layer_b": "BUILD", "layer_c": ["Systems", "Numerical"] },
+      "fresher_salary": "10-18M",
+      "years": {
+        "year_1_discover": {
+          "label": "🌱 Khám Phá — Xây nền tảng tư duy hệ thống",
+          "tasks": [
+            { "skill": "Excel/Google Sheets nâng cao", "specifics": "VLOOKUP, Pivot Table, dashboard", "priority": 1, "time_weeks": 3, "is_quick_win": true, "resources": ["yt_alex_analyst"], "category": "core" },
+            { "skill": "Tư duy quy trình (Process Mapping)", "specifics": "Flowchart, SIPOC, lean basics", "priority": 1, "time_weeks": 2, "is_quick_win": true, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "SQL cơ bản", "specifics": "SELECT, JOIN, GROUP BY", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["kaggle_learn"], "category": "core" },
+            { "skill": "Communication cơ bản", "specifics": "Email writing, meeting notes, report structure", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["linkedin_learning"], "category": "soft" }
+          ]
+        },
+        "year_2_experience": {
+          "label": "🔥 Trải Nghiệm — Tool mastery + thử nghiệm",
+          "tasks": [
+            { "skill": "Project Management cơ bản", "specifics": "Agile/Scrum basics, Gantt chart, WBS", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Data Visualization", "specifics": "Power BI hoặc Tableau basics", "priority": 2, "time_weeks": 6, "is_quick_win": false, "resources": ["coursera_audit", "yt_alex_analyst"], "category": "tool" },
+            { "skill": "Financial Literacy", "specifics": "P&L, cash flow, budgeting basics", "priority": 2, "time_weeks": 3, "is_quick_win": false, "resources": ["coursera_audit"], "category": "power" },
+            { "skill": "Tham gia CLB/AIESEC/competition", "specifics": "Bất kỳ hoạt động nào có project management thật", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["aiesec", "ivolunteer"], "category": "experience" }
+          ]
+        },
+        "year_3_battle": {
+          "label": "⚔️ Thực Chiến — Internship + chứng chỉ",
+          "tasks": [
+            { "skill": "Internship (Operations/PM/QA)", "specifics": "Ưu tiên công ty có hệ thống vận hành rõ ràng", "priority": 1, "time_weeks": 24, "is_quick_win": false, "resources": [], "category": "experience" },
+            { "skill": "Google Project Management Certificate", "specifics": "6 courses trên Coursera", "priority": 2, "time_weeks": 12, "is_quick_win": false, "resources": ["coursera_spec"], "category": "tool" },
+            { "skill": "SQL nâng cao", "specifics": "Window functions, CTEs, optimization", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["datacamp"], "category": "power" },
+            { "skill": "Presentation & Stakeholder Management", "specifics": "Trình bày rõ ràng cho non-tech audience", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["linkedin_learning"], "category": "soft" }
+          ]
+        },
+        "year_4_launch": {
+          "label": "🎯 Về Đích — Specialize + Apply",
+          "tasks": [
+            { "skill": "Chọn track: Operations vs Finance vs PM", "specifics": "Commit 1 hướng dựa trên internship experience", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "Industry-specific tool", "specifics": "SAP basics / Jira advanced / Power BI advanced", "priority": 2, "time_weeks": 6, "is_quick_win": false, "resources": ["udemy"], "category": "tool" },
+            { "skill": "CV + Portfolio polish", "specifics": "Quantify impact từ internship, case study format", "priority": 1, "time_weeks": 1, "is_quick_win": true, "resources": [], "category": "core" },
+            { "skill": "Apply chiến lược", "specifics": "Target companies match career cluster", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" }
+          ]
+        }
+      },
+      "quick_wins_month_1": [
+        { "title": "Tạo LinkedIn profile", "time": "1 ngày", "output": "Profile 100% complete" },
+        { "title": "Sắp xếp lại file cá nhân bằng Notion", "time": "2 giờ", "output": "PKM system cơ bản" },
+        { "title": "Hoàn thành 1 Excel tutorial", "time": "3 ngày", "output": "Biết Pivot Table" },
+        { "title": "Vẽ flowchart 1 quy trình quen thuộc", "time": "1 giờ", "output": "1 process map" },
+        { "title": "Join 1 cộng đồng PM/Ops", "time": "30 phút", "output": "Member of community" }
+      ]
+    },
+
+    "siamese": {
+      "breed_id": "siamese",
+      "breed_name": "Mèo Xiêm",
+      "tagline": "Người kết nối — biết đúng lúc nói đúng điều",
+      "career_cluster": "HR, PR, Marketing, Teaching, Community",
+      "dominant_profile": { "layer_a": "A1↑ A3↑", "layer_b": "CONNECT", "layer_c": ["Interpersonal", "Verbal"] },
+      "fresher_salary": "8-16M",
+      "years": {
+        "year_1_discover": {
+          "label": "🌱 Khám Phá — Hiểu con người + xây nền giao tiếp",
+          "tasks": [
+            { "skill": "Communication & Writing", "specifics": "Email, social media copywriting, storytelling cơ bản", "priority": 1, "time_weeks": 4, "is_quick_win": true, "resources": ["google_digital_garage"], "category": "core" },
+            { "skill": "Canva & Visual Content", "specifics": "Social posts, infographics, basic branding", "priority": 1, "time_weeks": 2, "is_quick_win": true, "resources": ["canva_edu"], "category": "tool" },
+            { "skill": "Social Media Management basics", "specifics": "Content calendar, engagement metrics, platform differences", "priority": 1, "time_weeks": 3, "is_quick_win": false, "resources": ["meta_blueprint", "google_digital_garage"], "category": "core" },
+            { "skill": "Empathy & Active Listening", "specifics": "Kỹ năng Xiêm đã có — cần train thêm structured feedback", "priority": 3, "time_weeks": 0, "is_quick_win": false, "resources": ["coursera_audit"], "category": "soft" }
+          ]
+        },
+        "year_2_experience": {
+          "label": "🔥 Trải Nghiệm — Build network + thử marketing/HR",
+          "tasks": [
+            { "skill": "Google Analytics 4", "specifics": "GA4 setup, event tracking, report reading", "priority": 1, "time_weeks": 2, "is_quick_win": false, "resources": ["google_digital_garage"], "category": "tool" },
+            { "skill": "Event Management", "specifics": "Tổ chức 1+ event thật (CLB, AIESEC, trường)", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["aiesec", "ivolunteer"], "category": "experience" },
+            { "skill": "Basic HR Knowledge", "specifics": "Recruitment process, employer branding, onboarding", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["coursera_audit"], "category": "power" },
+            { "skill": "Public Speaking", "specifics": "Thuyết trình trước nhóm 20+ người", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["linkedin_learning"], "category": "soft" }
+          ]
+        },
+        "year_3_battle": {
+          "label": "⚔️ Thực Chiến — Internship + chứng chỉ marketing",
+          "tasks": [
+            { "skill": "Internship (Marketing/HR/PR)", "specifics": "Ưu tiên role có client/stakeholder interaction", "priority": 1, "time_weeks": 24, "is_quick_win": false, "resources": [], "category": "experience" },
+            { "skill": "Google Ads Certification", "specifics": "Search + Display certifications", "priority": 2, "time_weeks": 2, "is_quick_win": false, "resources": ["google_digital_garage"], "category": "tool" },
+            { "skill": "Meta Blueprint Certification", "specifics": "Facebook/Instagram Ads", "priority": 2, "time_weeks": 2, "is_quick_win": false, "resources": ["meta_blueprint"], "category": "tool" },
+            { "skill": "Data literacy cho non-tech", "specifics": "Đọc hiểu dashboard, basic SQL, interpret metrics", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["datacamp", "kaggle_learn"], "category": "power" }
+          ]
+        },
+        "year_4_launch": {
+          "label": "🎯 Về Đích — Chọn track + Apply",
+          "tasks": [
+            { "skill": "Chọn track: Marketing vs HR vs PR", "specifics": "Commit 1 hướng", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "Portfolio: 3+ case studies", "specifics": "Campaign results, event outcomes, content performance", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": [], "category": "core" },
+            { "skill": "HubSpot Inbound Marketing Cert", "specifics": "Free certification, recognized", "priority": 2, "time_weeks": 2, "is_quick_win": false, "resources": ["coursera_audit"], "category": "tool" },
+            { "skill": "Apply chiến lược", "specifics": "Agency, FMCG, tech startups — match CONNECT drive", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" }
+          ]
+        }
+      },
+      "quick_wins_month_1": [
+        { "title": "Tạo LinkedIn profile + kết nối 50 người", "time": "1 ngày", "output": "Network seed" },
+        { "title": "Viết 1 bài blog/post về ngành mình", "time": "3 giờ", "output": "1 content piece" },
+        { "title": "Complete Google Digital Garage 1 module", "time": "1 tuần", "output": "Certificate" },
+        { "title": "Tham gia AIESEC hoặc CLB truyền thông", "time": "1 buổi", "output": "Member" },
+        { "title": "Design 3 social media posts bằng Canva", "time": "2 giờ", "output": "Portfolio pieces" }
+      ]
+    },
+
+    "bengal": {
+      "breed_id": "bengal",
+      "breed_name": "Mèo Bengal",
+      "tagline": "Người giải mã — thấy câu đố là phải giải",
+      "career_cluster": "Data, Dev, Consulting, Research",
+      "dominant_profile": { "layer_a": "A2↑ A4↑", "layer_b": "SOLVE", "layer_c": ["Numerical", "Systems"] },
+      "fresher_salary": "12-25M",
+      "years": {
+        "year_1_discover": {
+          "label": "🌱 Khám Phá — Build nền tảng kỹ thuật",
+          "tasks": [
+            { "skill": "SQL", "specifics": "SELECT, JOIN, GROUP BY, subquery, window functions", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["kaggle_learn"], "category": "core" },
+            { "skill": "Python cơ bản", "specifics": "pandas, numpy, matplotlib, data cleaning", "priority": 1, "time_weeks": 6, "is_quick_win": false, "resources": ["kaggle_learn", "coursera_audit"], "category": "core" },
+            { "skill": "Excel/Sheets", "specifics": "VLOOKUP, Pivot Table, basic dashboarding", "priority": 1, "time_weeks": 2, "is_quick_win": true, "resources": ["yt_alex_analyst"], "category": "core" },
+            { "skill": "Git basics", "specifics": "commit, push, pull, branch", "priority": 2, "time_weeks": 1, "is_quick_win": true, "resources": ["github_student"], "category": "tool" }
+          ]
+        },
+        "year_2_experience": {
+          "label": "🔥 Trải Nghiệm — Tool mastery + statistics",
+          "tasks": [
+            { "skill": "Power BI / Tableau", "specifics": "Build dashboard thực tế, connect data sources", "priority": 1, "time_weeks": 6, "is_quick_win": false, "resources": ["coursera_audit", "yt_alex_analyst"], "category": "tool" },
+            { "skill": "Statistics cơ bản", "specifics": "Mean/median, correlation, hypothesis testing", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["coursera_audit"], "category": "power" },
+            { "skill": "Google Analytics 4", "specifics": "GA4 setup, event tracking, report reading", "priority": 2, "time_weeks": 2, "is_quick_win": false, "resources": ["google_digital_garage"], "category": "tool" },
+            { "skill": "1 Kaggle competition", "specifics": "End-to-end data pipeline practice", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["kaggle_learn"], "category": "experience" }
+          ]
+        },
+        "year_3_battle": {
+          "label": "⚔️ Thực Chiến — Internship + certification",
+          "tasks": [
+            { "skill": "Data Internship", "specifics": "Data Analyst/BI/Research intern tại công ty VN", "priority": 1, "time_weeks": 24, "is_quick_win": false, "resources": [], "category": "experience" },
+            { "skill": "Google Data Analytics Certificate", "specifics": "8 courses, ~3 tháng", "priority": 2, "time_weeks": 12, "is_quick_win": false, "resources": ["coursera_spec"], "category": "tool" },
+            { "skill": "Personal Data Project VN", "specifics": "Phân tích dataset thật VN (GDP, tuyển dụng, e-commerce)", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["github_student"], "category": "experience" },
+            { "skill": "Storytelling with Data", "specifics": "Bengal thiên về logic — cần luyện present cho non-tech", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["linkedin_learning"], "category": "soft" }
+          ]
+        },
+        "year_4_launch": {
+          "label": "🎯 Về Đích — Specialize + Apply",
+          "tasks": [
+            { "skill": "Chọn track: Business vs Tech vs Marketing", "specifics": "Business → SQL+Storytelling+PPT (MBB, Big4). Tech → Python ML+A/B testing (Momo, VNPay, Shopee). Marketing → Google Ads+FB Ads (Agency, FMCG)", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "Advanced specialization", "specifics": "Tùy track: ML pipeline / A/B testing / Advanced SQL", "priority": 2, "time_weeks": 8, "is_quick_win": false, "resources": ["datacamp", "kaggle_learn"], "category": "power" },
+            { "skill": "CV + GitHub portfolio", "specifics": "3+ projects, quantified impact, clean README", "priority": 1, "time_weeks": 2, "is_quick_win": false, "resources": [], "category": "core" },
+            { "skill": "Apply chiến lược", "specifics": "Target: MBB/Big4/Accenture VN (Business) hoặc Momo/VNPay/Zalo/Shopee (Tech)", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" }
+          ]
+        }
+      },
+      "quick_wins_month_1": [
+        { "title": "Tạo LinkedIn profile đầy đủ", "time": "1 ngày", "output": "Profile 100% complete" },
+        { "title": "Complete 1 Kaggle mini-course", "time": "1 tuần", "output": "Badge + certificate" },
+        { "title": "Phân tích 1 dataset public VN", "time": "2 tuần", "output": "1 notebook trên GitHub" },
+        { "title": "Apply 1 internship (dù chưa đủ skill)", "time": "hôm nay", "output": "1 application sent" },
+        { "title": "Join 1 cộng đồng Data VN", "time": "30 phút", "output": "Member of community" }
+      ]
+    },
+
+    "persian": {
+      "breed_id": "persian",
+      "breed_name": "Mèo Ba Tư",
+      "tagline": "Người tạo hình — biến cảm xúc thành tác phẩm",
+      "career_cluster": "Design, Art, Content, Architecture, Fashion",
+      "dominant_profile": { "layer_a": "A1↓ A4↓", "layer_b": "CREATE", "layer_c": ["VisualCreative", "Verbal"] },
+      "fresher_salary": "8-18M",
+      "years": {
+        "year_1_discover": {
+          "label": "🌱 Khám Phá — Xây nền thẩm mỹ + tool cơ bản",
+          "tasks": [
+            { "skill": "Figma cơ bản", "specifics": "Auto layout, components, prototyping", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["figma_free"], "category": "core" },
+            { "skill": "Design Principles", "specifics": "Typography, color theory, layout, hierarchy", "priority": 1, "time_weeks": 3, "is_quick_win": false, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Canva & Quick Design", "specifics": "Social posts, presentations, mood boards", "priority": 1, "time_weeks": 1, "is_quick_win": true, "resources": ["canva_edu"], "category": "tool" },
+            { "skill": "Journaling / Creative Writing", "specifics": "Ba Tư cần không gian riêng để sáng tạo — build habit", "priority": 3, "time_weeks": 0, "is_quick_win": false, "resources": ["notion_obsidian"], "category": "soft" }
+          ]
+        },
+        "year_2_experience": {
+          "label": "🔥 Trải Nghiệm — Portfolio building + user research",
+          "tasks": [
+            { "skill": "UI/UX Design process", "specifics": "User research, wireframing, usability testing", "priority": 1, "time_weeks": 8, "is_quick_win": false, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Portfolio website", "specifics": "Behance hoặc personal site — 5+ projects", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["figma_free"], "category": "experience" },
+            { "skill": "Basic HTML/CSS", "specifics": "Hiểu developer handoff, không cần code production", "priority": 2, "time_weeks": 3, "is_quick_win": false, "resources": ["yt_traversy"], "category": "power" },
+            { "skill": "Content Creation", "specifics": "Blog, Instagram, hoặc YouTube — build personal brand", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["canva_edu"], "category": "experience" }
+          ]
+        },
+        "year_3_battle": {
+          "label": "⚔️ Thực Chiến — Internship + business skills",
+          "tasks": [
+            { "skill": "Design Internship", "specifics": "UI/UX, Graphic Design, hoặc Content tại agency/startup", "priority": 1, "time_weeks": 24, "is_quick_win": false, "resources": [], "category": "experience" },
+            { "skill": "Business Acumen", "specifics": "ROI justification, metrics, stakeholder presentation", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["linkedin_learning"], "category": "power" },
+            { "skill": "AI Design Tools", "specifics": "Midjourney, Dall-E, AI trong Figma workflow", "priority": 2, "time_weeks": 2, "is_quick_win": false, "resources": [], "category": "tool" },
+            { "skill": "Collaboration & Feedback", "specifics": "Ba Tư cần luyện nhận feedback — perfectionism là con dao hai lưỡi", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "soft" }
+          ]
+        },
+        "year_4_launch": {
+          "label": "🎯 Về Đích — Specialize + Apply",
+          "tasks": [
+            { "skill": "Chọn track: Product Design vs Content vs Art Direction", "specifics": "Commit 1 hướng", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "Portfolio polish", "specifics": "Case study format: problem → process → solution → impact", "priority": 1, "time_weeks": 3, "is_quick_win": false, "resources": [], "category": "core" },
+            { "skill": "Design System knowledge", "specifics": "Component libraries, design tokens, documentation", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["figma_free"], "category": "power" },
+            { "skill": "Apply chiến lược", "specifics": "Agency, tech startups, D2C brands", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" }
+          ]
+        }
+      },
+      "quick_wins_month_1": [
+        { "title": "Tạo Behance/Dribbble profile", "time": "1 ngày", "output": "Portfolio platform ready" },
+        { "title": "Redesign 1 app screen yêu thích", "time": "3 ngày", "output": "1 portfolio piece" },
+        { "title": "Complete Figma basics tutorial", "time": "1 tuần", "output": "Tool proficiency" },
+        { "title": "Tạo mood board cho personal brand", "time": "2 giờ", "output": "Style direction" },
+        { "title": "Follow 10 designers trên LinkedIn/Behance", "time": "30 phút", "output": "Inspiration feed" }
+      ]
+    },
+
+    "mainecoon": {
+      "breed_id": "mainecoon",
+      "breed_name": "Mèo Maine Coon",
+      "tagline": "Người dẫn đường — nhìn xa, nghĩ lớn, dẫn dắt tự nhiên",
+      "career_cluster": "BizDev, PM, Strategy, Startup, Policy",
+      "dominant_profile": { "layer_a": "A1↑ A4↑ A5↑", "layer_b": "BUILD+EXPRESS", "layer_c": ["Systems", "Interpersonal"] },
+      "fresher_salary": "15-30M",
+      "years": {
+        "year_1_discover": {
+          "label": "🌱 Khám Phá — Leadership + business foundations",
+          "tasks": [
+            { "skill": "Business Model Canvas", "specifics": "Lean Canvas, value proposition, competitive analysis", "priority": 1, "time_weeks": 3, "is_quick_win": true, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Public Speaking & Presentation", "specifics": "Structure, storytelling, slide design", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["linkedin_learning"], "category": "core" },
+            { "skill": "Excel + Basic Data", "specifics": "Financial modeling basics, pivot tables", "priority": 1, "time_weeks": 3, "is_quick_win": false, "resources": ["yt_alex_analyst"], "category": "core" },
+            { "skill": "Leadership trong CLB/tổ chức", "specifics": "Dẫn dắt 1 project thật, bất kỳ quy mô", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["aiesec"], "category": "experience" }
+          ]
+        },
+        "year_2_experience": {
+          "label": "🔥 Trải Nghiệm — Strategy + team building",
+          "tasks": [
+            { "skill": "Strategy Frameworks", "specifics": "SWOT, Porter's 5, 4P, BCG matrix", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "SQL + Data storytelling", "specifics": "Query data → build narrative → present", "priority": 2, "time_weeks": 6, "is_quick_win": false, "resources": ["kaggle_learn", "datacamp"], "category": "power" },
+            { "skill": "Networking chiến lược", "specifics": "Coffee chat 1/tuần với professionals", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["linkedin_learning"], "category": "soft" },
+            { "skill": "Case competition", "specifics": "Tham gia 1+ case competition (consulting-style)", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "experience" }
+          ]
+        },
+        "year_3_battle": {
+          "label": "⚔️ Thực Chiến — Internship + advisory role",
+          "tasks": [
+            { "skill": "Internship (BizDev/Strategy/PM)", "specifics": "Ưu tiên role có cross-functional exposure", "priority": 1, "time_weeks": 24, "is_quick_win": false, "resources": [], "category": "experience" },
+            { "skill": "Product Management basics", "specifics": "PRD, user stories, roadmapping, sprint planning", "priority": 2, "time_weeks": 6, "is_quick_win": false, "resources": ["coursera_audit"], "category": "power" },
+            { "skill": "Financial Analysis", "specifics": "DCF basics, valuation, unit economics", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["coursera_audit"], "category": "power" },
+            { "skill": "Mentoring juniors", "specifics": "Maine Coon cần luyện: dẫn dắt không áp đặt", "priority": 3, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "soft" }
+          ]
+        },
+        "year_4_launch": {
+          "label": "🎯 Về Đích — Specialize + Apply",
+          "tasks": [
+            { "skill": "Chọn track: Consulting vs Product vs Startup", "specifics": "Consulting → MBB/Big4. Product → Tech companies. Startup → own venture", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "Case study portfolio", "specifics": "3+ case studies: problem → analysis → recommendation → impact", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": [], "category": "core" },
+            { "skill": "Advanced stakeholder management", "specifics": "Negotiate, influence, align cross-functional teams", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "soft" },
+            { "skill": "Apply chiến lược", "specifics": "MBB, Big4, Accenture VN, tech PM roles", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" }
+          ]
+        }
+      },
+      "quick_wins_month_1": [
+        { "title": "Tạo LinkedIn profile + headline chiến lược", "time": "1 ngày", "output": "Professional brand" },
+        { "title": "Phân tích Business Model 1 startup VN", "time": "3 ngày", "output": "1 case study mini" },
+        { "title": "Đăng ký 1 vị trí leadership trong CLB", "time": "1 buổi", "output": "Leadership role" },
+        { "title": "Complete 1 strategy course module", "time": "1 tuần", "output": "Framework knowledge" },
+        { "title": "Schedule 1 coffee chat với senior", "time": "30 phút", "output": "1 mentor connection" }
+      ]
+    },
+
+    "ragdoll": {
+      "breed_id": "ragdoll",
+      "breed_name": "Mèo Ragdoll",
+      "tagline": "Người nâng đỡ — ở đâu có Ragdoll, ở đó mọi người cảm thấy an toàn",
+      "career_cluster": "Psychology, NGO, Social Work, Education, Healthcare",
+      "dominant_profile": { "layer_a": "A3↑↑ A1 mid-low", "layer_b": "CONNECT (care)", "layer_c": ["Interpersonal", "Verbal"] },
+      "fresher_salary": "8-15M",
+      "years": {
+        "year_1_discover": {
+          "label": "🌱 Khám Phá — Foundation tâm lý + helping skills",
+          "tasks": [
+            { "skill": "Active Listening & Counseling basics", "specifics": "Reflective listening, open questions, empathy building", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Writing & Documentation", "specifics": "Report writing, case notes, reflective journaling", "priority": 1, "time_weeks": 3, "is_quick_win": false, "resources": ["notion_obsidian"], "category": "core" },
+            { "skill": "Volunteer work", "specifics": "NGO, community service, mentoring juniors", "priority": 1, "time_weeks": 0, "is_quick_win": true, "resources": ["aiesec", "ivolunteer"], "category": "experience" },
+            { "skill": "Self-care practices", "specifics": "Ragdoll cho đi nhiều — cần luyện boundary setting", "priority": 3, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "soft" }
+          ]
+        },
+        "year_2_experience": {
+          "label": "🔥 Trải Nghiệm — Deepen helping skills + explore paths",
+          "tasks": [
+            { "skill": "Basic Psychology/Social Work courses", "specifics": "Developmental psychology, group dynamics", "priority": 1, "time_weeks": 8, "is_quick_win": false, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Community Management", "specifics": "Online/offline community building, engagement", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["google_digital_garage"], "category": "power" },
+            { "skill": "Data literacy cơ bản", "specifics": "Excel, basic surveys, impact measurement", "priority": 2, "time_weeks": 3, "is_quick_win": false, "resources": ["yt_alex_analyst"], "category": "power" },
+            { "skill": "Project ngoài trường", "specifics": "Lead/join 1 social impact project", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["ivolunteer"], "category": "experience" }
+          ]
+        },
+        "year_3_battle": {
+          "label": "⚔️ Thực Chiến — Internship + specialization",
+          "tasks": [
+            { "skill": "Internship (NGO/Education/Healthcare)", "specifics": "Ưu tiên role trực tiếp với beneficiaries", "priority": 1, "time_weeks": 24, "is_quick_win": false, "resources": [], "category": "experience" },
+            { "skill": "Specialized certification", "specifics": "Mental Health First Aid, Trauma-informed care, hoặc Teaching cert", "priority": 2, "time_weeks": 8, "is_quick_win": false, "resources": ["coursera_spec"], "category": "tool" },
+            { "skill": "Impact storytelling", "specifics": "Viết case study impact — quantify social outcomes", "priority": 2, "time_weeks": 3, "is_quick_win": false, "resources": [], "category": "power" },
+            { "skill": "Assertiveness training", "specifics": "Ragdoll cần luyện: nói 'không' khi cần, ra quyết định nhanh hơn", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "soft" }
+          ]
+        },
+        "year_4_launch": {
+          "label": "🎯 Về Đích — Apply + impact career",
+          "tasks": [
+            { "skill": "Chọn track: Psychology vs Social Work vs Education vs Healthcare", "specifics": "Commit 1 hướng", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "CV + impact portfolio", "specifics": "Highlight: hours volunteered, people impacted, programs led", "priority": 1, "time_weeks": 2, "is_quick_win": false, "resources": [], "category": "core" },
+            { "skill": "Graduate school prep (nếu cần)", "specifics": "Psychology/Social Work thường cần master's degree", "priority": 2, "time_weeks": 8, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "Apply chiến lược", "specifics": "NGOs, hospitals, schools, government social services", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" }
+          ]
+        }
+      },
+      "quick_wins_month_1": [
+        { "title": "Đăng ký volunteer tại 1 NGO", "time": "1 buổi", "output": "Volunteer position" },
+        { "title": "Tạo LinkedIn profile", "time": "1 ngày", "output": "Profile complete" },
+        { "title": "Đọc 1 cuốn sách tâm lý cơ bản", "time": "2 tuần", "output": "Foundation knowledge" },
+        { "title": "Viết 1 bài reflection về trải nghiệm volunteer", "time": "2 giờ", "output": "First portfolio piece" },
+        { "title": "Join community tâm lý/giáo dục trên Facebook", "time": "30 phút", "output": "Community access" }
+      ]
+    },
+
+    "munchkin": {
+      "breed_id": "munchkin",
+      "breed_name": "Mèo Munchkin",
+      "tagline": "Người phá khuôn — nhỏ mà có võ, lạ mà thành",
+      "career_cluster": "UX, Product, Game Design, Growth, Innovation",
+      "dominant_profile": { "layer_a": "A5↓ A4↑", "layer_b": "CREATE (innovation)", "layer_c": ["VisualCreative", "Systems"] },
+      "fresher_salary": "10-22M",
+      "years": {
+        "year_1_discover": {
+          "label": "🌱 Khám Phá — Prototype mindset + tool basics",
+          "tasks": [
+            { "skill": "Figma + Rapid Prototyping", "specifics": "Low-fi wireframes, clickable prototypes, user flows", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": ["figma_free"], "category": "core" },
+            { "skill": "Design Thinking", "specifics": "Empathize, Define, Ideate, Prototype, Test", "priority": 1, "time_weeks": 3, "is_quick_win": true, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Basic coding (HTML/CSS/JS)", "specifics": "Không cần pro — đủ để hiểu dev constraints", "priority": 2, "time_weeks": 6, "is_quick_win": false, "resources": ["yt_fireship", "yt_traversy"], "category": "power" },
+            { "skill": "Side project #1", "specifics": "Build bất kỳ thứ gì — app nhỏ, game mini, tool hữu ích", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["github_student"], "category": "experience" }
+          ]
+        },
+        "year_2_experience": {
+          "label": "🔥 Trải Nghiệm — User research + growth experiments",
+          "tasks": [
+            { "skill": "UX Research methods", "specifics": "User interviews, surveys, usability testing, analytics", "priority": 1, "time_weeks": 6, "is_quick_win": false, "resources": ["coursera_audit"], "category": "core" },
+            { "skill": "Growth Hacking basics", "specifics": "A/B testing, funnel analysis, viral loops", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["google_digital_garage"], "category": "power" },
+            { "skill": "Data for Product people", "specifics": "SQL basics, analytics dashboards, metrics (DAU, retention)", "priority": 2, "time_weeks": 4, "is_quick_win": false, "resources": ["kaggle_learn", "datacamp"], "category": "power" },
+            { "skill": "Hackathon / Innovation competition", "specifics": "Munchkin thích phá khuôn — hackathon là playground hoàn hảo", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "experience" }
+          ]
+        },
+        "year_3_battle": {
+          "label": "⚔️ Thực Chiến — Internship + ship products",
+          "tasks": [
+            { "skill": "Internship (Product/UX/Growth)", "specifics": "Ưu tiên startup hoặc product team trong company lớn", "priority": 1, "time_weeks": 24, "is_quick_win": false, "resources": [], "category": "experience" },
+            { "skill": "Ship 1 real product", "specifics": "Side project có real users — không chỉ prototype", "priority": 1, "time_weeks": 8, "is_quick_win": false, "resources": ["github_student"], "category": "experience" },
+            { "skill": "Product Analytics", "specifics": "Mixpanel/Amplitude basics, cohort analysis", "priority": 2, "time_weeks": 3, "is_quick_win": false, "resources": ["coursera_audit"], "category": "tool" },
+            { "skill": "Structure & Process", "specifics": "Munchkin weakness — luyện sprint planning, documentation", "priority": 2, "time_weeks": 0, "is_quick_win": false, "resources": ["notion_obsidian"], "category": "soft" }
+          ]
+        },
+        "year_4_launch": {
+          "label": "🎯 Về Đích — Specialize + Apply",
+          "tasks": [
+            { "skill": "Chọn track: Product Design vs Growth vs Game vs Innovation", "specifics": "Commit 1 hướng", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" },
+            { "skill": "Portfolio of shipped work", "specifics": "3+ projects with real metrics: users, retention, growth", "priority": 1, "time_weeks": 4, "is_quick_win": false, "resources": [], "category": "core" },
+            { "skill": "Innovation storytelling", "specifics": "How you went from idea → prototype → launch → learn", "priority": 2, "time_weeks": 2, "is_quick_win": false, "resources": [], "category": "soft" },
+            { "skill": "Apply chiến lược", "specifics": "Tech startups, product teams, innovation labs", "priority": 1, "time_weeks": 0, "is_quick_win": false, "resources": [], "category": "strategy" }
+          ]
+        }
+      },
+      "quick_wins_month_1": [
+        { "title": "Tạo tài khoản Figma + làm 1 wireframe", "time": "2 giờ", "output": "First prototype" },
+        { "title": "Complete Design Thinking crash course", "time": "3 ngày", "output": "Framework knowledge" },
+        { "title": "Build 1 mini side project", "time": "2 tuần", "output": "Shipped something" },
+        { "title": "Join Product/UX community VN", "time": "30 phút", "output": "Community access" },
+        { "title": "Tạo GitHub profile + push first code", "time": "1 ngày", "output": "Developer identity" }
+      ]
+    }
+  }
+}

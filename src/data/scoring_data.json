@@ -1,0 +1,815 @@
+{
+  "meta": {
+    "version": "2.0",
+    "source": "genpath-v2-logic.pdf — Thẻ 3, Sprint 2 Doc, pages 38-49",
+    "total_questions": 24,
+    "total_gates": 5,
+    "branching_questions": ["Q4", "Q9", "Q14", "Q19"],
+    "tie_breaker": "Q24",
+    "scoring_rules": {
+      "layer_a": "Bipolar axis: negative = left pole, positive = right pole. A1: Introvert(-) ↔ Extrovert(+), A2: Intuitive(-) ↔ Analytical(+), A3: Autonomous(-) ↔ Empathetic(+), A4: Reflective(-) ↔ Action-first(+), A5: Adaptive(-) ↔ Structured(+)",
+      "layer_b": "Cumulative positive only. Drives: BUILD, CONNECT, SOLVE, CREATE, EXPRESS",
+      "layer_c": "Cumulative positive only. Aptitudes: Verbal, Numerical, Systems, Interpersonal, VisualCreative",
+      "weights": "+1 (light), +2 (medium), +3 (strong)"
+    }
+  },
+
+  "questions": [
+    {
+      "id": "Q1",
+      "gate": 1,
+      "gate_name": "Căn Phòng Không Có Tường",
+      "gate_detect": ["A1", "A3", "A4"],
+      "text": "Bạn đang ngồi trên một chiếc ghế. Trên bàn có một tách trà còn bốc khói. Bạn không nhớ đã rót nó lúc nào — hoặc tại sao nó lại ở đây. Căn phòng không có tường, chỉ có sương mù bao quanh. Không có gì đáng sợ. Chỉ là... lạ.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Uống trà. Nó còn nóng thì uống thôi.",
+          "label": "Extrovert · Action",
+          "scoring": { "A1": 2, "A4": 2 }
+        },
+        {
+          "id": "B",
+          "text": "Ngồi yên. Xem có gì xảy ra tiếp không.",
+          "label": "Introvert · Observe",
+          "scoring": { "A1": -2, "A4": -2 }
+        },
+        {
+          "id": "C",
+          "text": "Nhìn xung quanh xem ai đã để trà ở đây.",
+          "label": "Interpersonal · Connect",
+          "scoring": { "A3": 2, "CONNECT": 1, "Interpersonal": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q2",
+      "gate": 1,
+      "gate_name": "Căn Phòng Không Có Tường",
+      "text": "Sương mù bắt đầu tan. Bạn nhận ra mình không ở một mình — có khoảng mười người khác cũng đang ngồi trên ghế, mỗi người nhìn về một hướng khác nhau. Không ai nói chuyện. Không ai nhìn bạn.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Thở phào. Có người thì đỡ lạ hơn.",
+          "label": "Extrovert · Social energy",
+          "scoring": { "A1": 2, "CONNECT": 1, "Interpersonal": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Hơi thất vọng. Bạn thích không gian đó hơn khi chỉ có một mình.",
+          "label": "Introvert · Solo energy",
+          "scoring": { "A1": -3, "A3": -1 }
+        },
+        {
+          "id": "C",
+          "text": "Tò mò — họ đang nhìn gì vậy?",
+          "label": "Analytical · Curious",
+          "scoring": { "A2": 2, "SOLVE": 1, "Systems": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Cố bắt ánh mắt của ai đó.",
+          "label": "Extrovert · Initiate connect",
+          "scoring": { "A1": 3, "A3": 1, "A4": 1, "CONNECT": 1, "Interpersonal": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q3",
+      "gate": 1,
+      "gate_name": "Căn Phòng Không Có Tường",
+      "text": "Một đứa trẻ bước ra từ sương mù. Nó nhìn thẳng vào mắt bạn và hỏi: 'Bạn có biết mình đang ở đâu không?' Nó không có vẻ lo lắng gì cả. Nó hỏi như hỏi giờ ăn sáng vậy.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "\"Không biết. Nhưng mà... ổn không?\" — bạn hỏi lại.",
+          "label": "Empathy · Relational",
+          "scoring": { "A3": 3, "CONNECT": 2, "Interpersonal": 2 }
+        },
+        {
+          "id": "B",
+          "text": "\"Không biết. Nhưng chắc sẽ biết thôi.\" — bạn trả lời thật.",
+          "label": "Adaptive · Confident",
+          "scoring": { "A3": -1, "A4": 2, "A5": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Bạn không trả lời. Bạn hỏi lại: \"Sao bạn hỏi vậy?\"",
+          "label": "Analytical · Question-first",
+          "scoring": { "A2": 3, "A4": -1, "SOLVE": 1, "Systems": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q4",
+      "gate": 1,
+      "gate_name": "Căn Phòng Không Có Tường",
+      "text": "Đứa trẻ chỉ tay về phía sương mù và nói: 'Cửa ở đằng kia.' Rồi nó biến mất — không phải đi, mà là biến mất, như tắt đèn. Bạn nhìn về phía nó chỉ. Sương mù dày hơn ở đó. Không thấy gì cả.",
+      "is_branching": true,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Đi thẳng vào. Đứa trẻ nói thì tin.",
+          "label": "Intuitive · Trust",
+          "scoring": { "A2": -2, "A4": 3, "A5": -1 },
+          "branch_to": "rung_toi"
+        },
+        {
+          "id": "B",
+          "text": "Hỏi những người khác xem có ai muốn đi cùng không.",
+          "label": "Extrovert · Social",
+          "scoring": { "A1": 3, "A3": 2, "CONNECT": 2, "Interpersonal": 1 },
+          "branch_to": "rung_dong"
+        },
+        {
+          "id": "C",
+          "text": "Ngồi xuống thêm một chút. Quan sát xem người khác làm gì trước.",
+          "label": "Introvert · Process",
+          "scoring": { "A1": -2, "A2": 1, "A4": -2, "Systems": 1 },
+          "branch_to": "rung_im_lang"
+        },
+        {
+          "id": "D",
+          "text": "Đi về phía ngược lại với chỗ nó chỉ. Xem có gì ở đó không.",
+          "label": "Contrarian · Explore",
+          "scoring": { "A2": -2, "A4": 2, "A5": -2, "CREATE": 2 },
+          "branch_to": "rung_dac_biet"
+        }
+      ]
+    },
+
+    {
+      "id": "Q5",
+      "gate": 2,
+      "gate_name": "Khu Rừng Ngược",
+      "gate_detect": ["A2", "A4", "A5", "SOLVE"],
+      "text": "Bạn bước vào và nhận ra: cây mọc từ trên trời xuống đất. Rễ lơ lửng trên không, ngọn cắm sâu trong đất. Ánh sáng đến từ phía dưới. Bạn không biết đây là lạ hay chỉ là bình thường ở đây.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Bạn dừng lại và cố hiểu tại sao nó lại như vậy.",
+          "label": "Analytical · Systems",
+          "scoring": { "A2": 3, "A4": -1, "A5": 1, "SOLVE": 2, "Systems": 2 }
+        },
+        {
+          "id": "B",
+          "text": "Bạn chấp nhận và tiếp tục đi. Logic ở đây chắc khác.",
+          "label": "Intuitive · Adaptive",
+          "scoring": { "A2": -2, "A4": 2, "A5": -1 }
+        },
+        {
+          "id": "C",
+          "text": "Bạn chạm vào một cái rễ đang lơ lửng gần mình.",
+          "label": "Experiential · Tactile",
+          "scoring": { "A4": 2, "CREATE": 1, "VisualCreative": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q6",
+      "gate": 2,
+      "gate_name": "Khu Rừng Ngược",
+      "text": "Có một con chim đang bay — nhưng nó bay ngược, đuôi trước mỏ sau. Nó nhìn bạn (bằng cái đuôi?) và hỏi: 'Bạn đang đi đâu?' Bạn chưa kịp trả lời thì nó hỏi thêm: 'Hay là bạn đang đi từ đâu?'",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Trả lời câu đầu: \"Tôi đang tìm lối ra.\"",
+          "label": "Goal-oriented · Forward",
+          "scoring": { "A4": 2, "A5": 1, "BUILD": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Trả lời câu sau: \"Tôi vừa từ căn phòng không có tường ra.\"",
+          "label": "Reflective · Past-aware",
+          "scoring": { "A4": -2 }
+        },
+        {
+          "id": "C",
+          "text": "Trả lời cả hai — bạn không muốn bỏ qua câu nào.",
+          "label": "Thorough · Complete",
+          "scoring": { "A2": 1, "A5": 2, "BUILD": 1, "Systems": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Hỏi lại: \"Hai câu đó khác nhau không?\"",
+          "label": "Philosophical · Meta-thinking",
+          "scoring": { "A2": 2, "A4": -1, "A5": -1, "SOLVE": 2, "Systems": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q7",
+      "gate": 2,
+      "gate_name": "Khu Rừng Ngược",
+      "text": "Bạn thấy một tờ giấy dán trên thân cây — nhưng cây lộn ngược nên tờ giấy cũng lộn ngược. Để đọc được, bạn phải nằm xuống đất nhìn lên. Tờ giấy có viết một thứ gì đó.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Nằm xuống đọc. Thông tin quan trọng hơn tư thế.",
+          "label": "Info-driven · Resourceful",
+          "scoring": { "A2": 2, "A4": 2, "SOLVE": 1, "Numerical": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Cố đọc từ xa dù bị lộn ngược. Không muốn nằm xuống đất lạ.",
+          "label": "Cautious · Independent",
+          "scoring": { "A2": 1, "A4": -1, "A5": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Bỏ qua. Bạn không chắc mình cần đọc cái đó.",
+          "label": "Intuitive · Trust gut",
+          "scoring": { "A2": -2, "A5": -1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q8",
+      "gate": 2,
+      "gate_name": "Khu Rừng Ngược",
+      "text": "Bạn gặp một người đang ngồi dưới gốc cây — hay đúng hơn là ngồi trên ngọn cây vì cây lộn ngược, nên người đó đang ngồi... ở dưới đất nhưng trên cây? Họ đang giải một bài toán viết trên cát. Họ không nhìn lên.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Nhìn bài toán xem có giải được không.",
+          "label": "Numerical · Problem-solve",
+          "scoring": { "A2": 3, "A4": 1, "SOLVE": 2, "Numerical": 2 }
+        },
+        {
+          "id": "B",
+          "text": "Hỏi họ đang làm gì.",
+          "label": "Social · Curious about people",
+          "scoring": { "A1": 2, "A3": 1, "CONNECT": 1, "Interpersonal": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Ngồi xuống cạnh họ, không nói gì.",
+          "label": "Empathetic · Presence",
+          "scoring": { "A1": -1, "A3": 3, "A4": -1, "CONNECT": 1, "Interpersonal": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Đi tiếp. Trông có vẻ họ đang bận.",
+          "label": "Respectful · Autonomous",
+          "scoring": { "A3": -2, "A4": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q9",
+      "gate": 2,
+      "gate_name": "Khu Rừng Ngược",
+      "text": "Lối ra khỏi khu rừng là một cái cổng hình tròn — nhưng nó đang xoay. Không nhanh, không chậm. Chỉ xoay đều đều. Để đi qua, bạn phải chọn đúng lúc.",
+      "is_branching": true,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Đếm nhịp xoay rồi tính thời điểm chính xác để đi qua.",
+          "label": "Analytical · Systematic",
+          "scoring": { "A2": 3, "A5": 3, "SOLVE": 2, "Numerical": 2, "Systems": 1 },
+          "branch_to": "tp_dem"
+        },
+        {
+          "id": "B",
+          "text": "Nhắm mắt, hít thở, rồi đi khi cảm thấy đúng.",
+          "label": "Intuitive · Feel-based",
+          "scoring": { "A2": -3, "A4": 2, "A5": -2 },
+          "branch_to": "tp_hoang_hon"
+        },
+        {
+          "id": "C",
+          "text": "Chờ người khác đi trước. Xem họ làm sao.",
+          "label": "Observant · Learn-from-others",
+          "scoring": { "A1": -1, "A3": 1, "A4": -1, "Systems": 1 },
+          "branch_to": "tp_binh_minh"
+        }
+      ]
+    },
+
+    {
+      "id": "Q10",
+      "gate": 3,
+      "gate_name": "Thành Phố Biết Tên Bạn",
+      "gate_detect": ["A3", "CONNECT", "BUILD", "EXPRESS"],
+      "text": "Bạn bước vào một thành phố và nhận ra: mọi người đều chào bạn bằng tên. Không phải tên bạn đang dùng — mà một cái tên khác, một cái tên bạn chưa từng nghe nhưng nghe rất quen. Họ không giải thích. Họ chỉ... biết.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Cảm thấy ấm lòng kỳ lạ. Dù sao cũng được gọi tên.",
+          "label": "Empathy · Belonging",
+          "scoring": { "A3": 3, "CONNECT": 2, "Interpersonal": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Khó chịu nhẹ. Ai cho họ quyền gọi tên mình?",
+          "label": "Autonomous · Boundary",
+          "scoring": { "A3": -3 }
+        },
+        {
+          "id": "C",
+          "text": "Tò mò. Tên đó từ đâu ra?",
+          "label": "Analytical · Origin-seeking",
+          "scoring": { "A2": 3, "SOLVE": 1, "Systems": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q11",
+      "gate": 3,
+      "gate_name": "Thành Phố Biết Tên Bạn",
+      "text": "Một người đến gặp bạn, nói: 'Bạn ơi, tôi đang cần giúp đỡ.' Rồi họ im lặng. Không nói cần giúp gì. Chỉ nhìn bạn.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Hỏi: \"Bạn cần giúp gì?\"",
+          "label": "Direct · Practical",
+          "scoring": { "A3": 1, "A4": 2, "A5": 1, "BUILD": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Hỏi: \"Bạn có ổn không?\"",
+          "label": "Empathetic · Emotional-first",
+          "scoring": { "A3": 3, "CONNECT": 2, "Interpersonal": 2 }
+        },
+        {
+          "id": "C",
+          "text": "Ngồi xuống cạnh họ. Chờ họ nói tiếp.",
+          "label": "Patient · Presence",
+          "scoring": { "A3": 2, "A4": -1, "CONNECT": 1, "Interpersonal": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Nhìn xung quanh xem có ai khác phù hợp hơn không.",
+          "label": "Realistic · Self-aware limits",
+          "scoring": { "A3": 1, "A4": -1, "Systems": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q12",
+      "gate": 3,
+      "gate_name": "Thành Phố Biết Tên Bạn",
+      "flag": "CẦN POLISH",
+      "text": "Bạn thấy hai người đang cãi nhau. Một người khóc. Một người nói rất to. Bạn không biết họ cãi về gì — nhưng cả hai đều nhìn về phía bạn, như chờ bạn nói gì đó.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Hỏi từng người kể chuyện gì đã xảy ra.",
+          "label": "Fair · Process-oriented",
+          "scoring": { "A2": 2, "A3": 2, "BUILD": 1, "Systems": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Đến với người đang khóc trước.",
+          "label": "Empathy · Emotional priority",
+          "scoring": { "A3": 3, "CONNECT": 2, "Interpersonal": 2 }
+        },
+        {
+          "id": "C",
+          "text": "Nói: \"Hai bạn có thể giải thích cùng một lúc không, tôi nghe được hết.\"",
+          "label": "Confident · Mediator",
+          "scoring": { "A1": 2, "A4": 2, "EXPRESS": 2, "Verbal": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q13",
+      "gate": 3,
+      "gate_name": "Thành Phố Biết Tên Bạn",
+      "text": "Có một người theo bạn suốt buổi sáng. Không nói gì, không làm gì. Chỉ đi theo, cách khoảng hai bước. Khi bạn nhìn lại, họ nhìn đi chỗ khác.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Quay lại hỏi thẳng: \"Bạn cần gì không?\"",
+          "label": "Direct · Confident",
+          "scoring": { "A1": 2, "A4": 2, "EXPRESS": 1, "Verbal": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Giả vờ không để ý nhưng thay đổi đường đi xem họ có theo không.",
+          "label": "Strategic · Test-first",
+          "scoring": { "A2": 3, "A4": 1, "SOLVE": 1, "Systems": 2 }
+        },
+        {
+          "id": "C",
+          "text": "Cảm thấy bất an. Đi nhanh hơn.",
+          "label": "Introverted · Boundary",
+          "scoring": { "A1": -2, "A4": -1 }
+        },
+        {
+          "id": "D",
+          "text": "Dừng lại, đứng chờ họ đến gần.",
+          "label": "Patient · Open",
+          "scoring": { "A3": 2, "A4": -1, "CONNECT": 1, "Interpersonal": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q14",
+      "gate": 3,
+      "gate_name": "Thành Phố Biết Tên Bạn",
+      "text": "Cuối thành phố có một cái cầu. Trên cầu có một người gác cổng — nhưng họ đang ngủ. Bên cạnh họ có một cuốn sổ ghi: 'Nếu muốn qua, hãy để lại thứ gì đó.'",
+      "is_branching": true,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Để lại một câu chuyện — bạn viết vội vào sổ điều gì đó về mình.",
+          "label": "Expressive · Verbal",
+          "scoring": { "A4": 1, "A5": 1, "EXPRESS": 3, "Verbal": 2 },
+          "branch_to": "dd_bao"
+        },
+        {
+          "id": "B",
+          "text": "Để lại một câu hỏi. Không phải câu trả lời.",
+          "label": "Philosophical · Curious",
+          "scoring": { "A2": 2, "A4": -1, "SOLVE": 2, "Systems": 1 },
+          "branch_to": "dd_yen"
+        },
+        {
+          "id": "C",
+          "text": "Đánh thức người gác cổng dậy. Xin phép đàng hoàng.",
+          "label": "Respectful · Rule-aware",
+          "scoring": { "A3": 1, "A4": 1, "A5": 2, "BUILD": 1 },
+          "branch_to": "dd_binh_minh"
+        }
+      ]
+    },
+
+    {
+      "id": "Q15",
+      "gate": 4,
+      "gate_name": "Đại Dương Lửa",
+      "gate_detect": ["BUILD", "CONNECT", "SOLVE", "CREATE"],
+      "text": "Đại dương trước mặt bạn không phải nước — là lửa. Nhưng nó gợn sóng như nước, có mùi như nước, và kỳ lạ thay, trông mát như nước. Có một chiếc thuyền đang neo đậu. Không có mái chèo. Có một tờ giấy trong thuyền.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Đọc tờ giấy trước khi xuống thuyền.",
+          "label": "Analytical · Info-first",
+          "scoring": { "A2": 3, "A4": -1, "A5": 1, "SOLVE": 1, "Numerical": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Xuống thuyền rồi đọc sau.",
+          "label": "Action-first · Trust",
+          "scoring": { "A2": -1, "A4": 3, "A5": -1 }
+        },
+        {
+          "id": "C",
+          "text": "Thử chạm vào lửa xem có bỏng không.",
+          "label": "Experiential · Test-first",
+          "scoring": { "A4": 2, "A5": -1, "CREATE": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Tìm xem có thuyền nào khác không.",
+          "label": "Options-seeker · Strategic",
+          "scoring": { "A2": 1, "A5": 1, "BUILD": 1, "Systems": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q16",
+      "gate": 4,
+      "gate_name": "Đại Dương Lửa",
+      "text": "Thuyền tự di chuyển — không hỏi bạn muốn đi đâu. Giữa đại dương, bạn thấy một hòn đảo. Trên đảo có một thứ gì đó đang xây dở. Thuyền đang đi về phía đó.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Hứng khởi. Bạn thích thứ còn chưa hoàn thiện — bạn có thể đóng góp.",
+          "label": "BUILD drive · Co-create",
+          "scoring": { "A4": 2, "A5": 1, "BUILD": 3 }
+        },
+        {
+          "id": "B",
+          "text": "Hơi lo. Không biết người ta có cần mình không.",
+          "label": "CONNECT drive · Belonging",
+          "scoring": { "A3": 2, "CONNECT": 2, "Interpersonal": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Tò mò về thứ đang được xây — nó là gì vậy?",
+          "label": "SOLVE drive · Problem-curious",
+          "scoring": { "A2": 2, "SOLVE": 2, "Systems": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q17",
+      "gate": 4,
+      "gate_name": "Đại Dương Lửa",
+      "text": "Trên đảo, bạn gặp một nhóm người. Họ đang làm việc — nhưng không ai biết ai đang làm gì. Không có kế hoạch, không có sơ đồ, mỗi người cứ làm theo ý mình. Kết quả trông... không đẹp lắm. Nhưng vẫn đang tiến.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Tự nhiên bắt đầu vẽ sơ đồ tổng thể cho cả nhóm xem.",
+          "label": "BUILD · Structure · Leadership",
+          "scoring": { "A1": 1, "A2": 1, "A4": 1, "A5": 3, "BUILD": 3, "Systems": 2 }
+        },
+        {
+          "id": "B",
+          "text": "Hỏi từng người đang làm gì rồi kết nối các mảnh lại.",
+          "label": "CONNECT · Integrator",
+          "scoring": { "A1": 1, "A3": 2, "CONNECT": 3, "Interpersonal": 2 }
+        },
+        {
+          "id": "C",
+          "text": "Tìm chỗ còn thiếu và lặng lẽ làm phần đó.",
+          "label": "SOLVE · Independent contributor",
+          "scoring": { "A1": -1, "A2": 1, "A4": 1, "SOLVE": 3, "Numerical": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Đề xuất một cách làm hoàn toàn khác — cái này không ổn rồi.",
+          "label": "CREATE · Disruptor",
+          "scoring": { "A2": 1, "A4": -1, "A5": -2, "CREATE": 3, "VisualCreative": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q18",
+      "gate": 4,
+      "gate_name": "Đại Dương Lửa",
+      "flag": "CẦN POLISH",
+      "text": "Đêm xuống. Lửa trên đại dương tắt dần — bây giờ nó đen như mực. Có người trong nhóm đề nghị: 'Sáng mai tiếp tục.' Nhưng bạn biết nếu dừng bây giờ, sáng mai sẽ phải bắt đầu lại từ đầu.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Đề nghị tiếp tục. Momentum quan trọng hơn nghỉ ngơi.",
+          "label": "Drive · High energy · Urgency",
+          "scoring": { "A4": 3, "BUILD": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Đồng ý dừng. Người mệt làm việc kém hơn.",
+          "label": "Sustainable · Team-first",
+          "scoring": { "A3": 2, "A4": -1, "CONNECT": 1, "Interpersonal": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Hỏi nhóm xem mọi người thấy sao — để cả nhóm quyết.",
+          "label": "Democratic · Process",
+          "scoring": { "A1": 1, "A3": 1, "CONNECT": 1, "Interpersonal": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q19",
+      "gate": 4,
+      "gate_name": "Đại Dương Lửa",
+      "text": "Sáng hôm sau, thứ đang được xây đã hoàn thành — dù bạn không nhớ ai đã làm phần cuối. Nó là một cái cổng. Đủ lớn để đi qua. Phía bên kia mờ mờ.",
+      "is_branching": true,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Đi qua một mình. Đến rồi sẽ biết.",
+          "label": "Independent · Depth",
+          "scoring": { "A1": -2, "A3": -2, "A4": 2, "SOLVE": 1 },
+          "branch_to": "cd_solo"
+        },
+        {
+          "id": "B",
+          "text": "Đề nghị mọi người cùng đi qua.",
+          "label": "Collective · Breadth",
+          "scoring": { "A1": 3, "A3": 2, "CONNECT": 2, "Interpersonal": 1 },
+          "branch_to": "cd_nhom"
+        },
+        {
+          "id": "C",
+          "text": "Nhìn lại cái đã xây một lần nữa trước khi đi.",
+          "label": "Reflective · Legacy",
+          "scoring": { "A2": 1, "A4": -2, "BUILD": 1 },
+          "branch_to": "cd_ky_uc"
+        },
+        {
+          "id": "D",
+          "text": "Hỏi cái cổng: \"Bên kia là gì?\" — không kỳ vọng nó trả lời.",
+          "label": "Philosophical · Wonder",
+          "scoring": { "A2": 1, "A4": -1, "A5": -1, "SOLVE": 1, "Systems": 1 },
+          "branch_to": "cd_hu_khong"
+        }
+      ]
+    },
+
+    {
+      "id": "Q20",
+      "gate": 5,
+      "gate_name": "Cung Điện Gương",
+      "gate_detect": ["confirm_all", "Layer_C_signals"],
+      "text": "Mỗi gương trong cung điện phản chiếu một phiên bản khác của bạn. Không phải bạn già hơn hay trẻ hơn — mà là bạn ở một cuộc sống khác. Một phiên bản đang nói chuyện với rất nhiều người. Một phiên bản đang ngồi một mình với một cuốn sách dày. Một phiên bản đang đứng trên cái gì đó rất cao, nhìn xuống.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Phiên bản đang nói chuyện — trông có vẻ sống động nhất.",
+          "label": "Breadth · Social impact · Extrovert",
+          "scoring": { "A1": 3, "A4": 1, "A5": 1, "EXPRESS": 2, "Verbal": 1, "Interpersonal": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Phiên bản đang đọc sách — trông có vẻ bình yên nhất.",
+          "label": "Depth · Solo mastery · Introvert",
+          "scoring": { "A1": -3, "A4": -1, "A5": -1, "SOLVE": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Phiên bản đứng trên cao — không rõ đang nhìn gì, nhưng tò mò.",
+          "label": "Vision · Big picture · Strategic",
+          "scoring": { "A2": 1, "A5": 2, "BUILD": 1, "Systems": 2 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q21",
+      "gate": 5,
+      "gate_name": "Cung Điện Gương",
+      "text": "Một gương bắt đầu nói chuyện với bạn. Không phải phiên bản của bạn trong đó — chính cái gương nói. Nó hỏi: 'Bạn muốn giỏi một thứ đến mức không ai bằng, hay bạn muốn biết đủ mọi thứ để kết nối mọi người?'",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Thứ nhất. Giỏi thật sự một thứ gì đó.",
+          "label": "Depth · Specialist",
+          "scoring": { "A1": -1, "A5": 2, "SOLVE": 2 }
+        },
+        {
+          "id": "B",
+          "text": "Thứ hai. Kết nối người thú vị hơn.",
+          "label": "Breadth · Generalist · Connector",
+          "scoring": { "A1": 2, "A3": 2, "A5": -1, "CONNECT": 2, "Interpersonal": 2 }
+        },
+        {
+          "id": "C",
+          "text": "\"Hai thứ đó mâu thuẫn nhau không?\" — bạn hỏi lại gương.",
+          "label": "Meta · Both-and thinker",
+          "scoring": { "A2": 2, "SOLVE": 1, "Systems": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Bạn không trả lời. Câu hỏi đó không có đáp án đúng.",
+          "label": "Philosophical · Resist binary",
+          "scoring": { "A2": -1, "A5": -2, "CREATE": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q22",
+      "gate": 5,
+      "gate_name": "Cung Điện Gương",
+      "text": "Bạn tìm thấy một căn phòng ở cuối cung điện. Trong phòng có một bàn, và trên bàn có ba thứ: một tờ giấy trắng, một cái máy tính đang chạy một đoạn code, và một cái micro đang bật.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Cầm tờ giấy lên và bắt đầu viết hoặc vẽ gì đó.",
+          "label": "CREATE · Visual/Verbal aptitude",
+          "scoring": { "A2": 1, "CREATE": 3, "VisualCreative": 3 }
+        },
+        {
+          "id": "B",
+          "text": "Nhìn vào màn hình máy tính xem code đang làm gì.",
+          "label": "SOLVE · Numerical/Systems aptitude",
+          "scoring": { "A2": 3, "A5": 1, "SOLVE": 3, "Numerical": 3, "Systems": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Nói gì đó vào micro — bất kỳ thứ gì.",
+          "label": "EXPRESS · Verbal/Interpersonal aptitude",
+          "scoring": { "A1": 2, "A4": 1, "A5": 1, "EXPRESS": 3, "Verbal": 3 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q23",
+      "gate": 5,
+      "gate_name": "Cung Điện Gương",
+      "flag": "CẦN POLISH",
+      "text": "Có một phiên bản khác của bạn đang đứng chặn lối ra. Không hung hăng — chỉ đứng đó. Nó nói: 'Trước khi đi, bạn cần để lại thứ gì đó ở đây.' Bạn nhìn xuống và thấy bạn đang cầm bốn thứ: một ký ức, một kỹ năng, một mối quan hệ, và một câu hỏi chưa có lời giải.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Để lại ký ức. Bạn không cần nặng gánh.",
+          "label": "Forward-focused · Growth mindset",
+          "scoring": { "A4": 2, "BUILD": 1 }
+        },
+        {
+          "id": "B",
+          "text": "Để lại kỹ năng. Vào cuộc sống mới thì học lại cũng được.",
+          "label": "Adaptive · Unattached to identity",
+          "scoring": { "A5": -2, "CREATE": 1 }
+        },
+        {
+          "id": "C",
+          "text": "Để lại mối quan hệ. Nặng nhất nhưng cũng cần nhất.",
+          "label": "Independent · Self-reliant",
+          "scoring": { "A3": -2, "SOLVE": 1 }
+        },
+        {
+          "id": "D",
+          "text": "Để lại câu hỏi chưa có lời giải. Bạn muốn giữ phần còn lại.",
+          "label": "Curious · Question-keeper · Depth",
+          "scoring": { "A2": -1, "A5": 1, "CONNECT": 1 }
+        }
+      ]
+    },
+
+    {
+      "id": "Q24",
+      "gate": 5,
+      "gate_name": "Cung Điện Gương",
+      "is_tie_breaker": true,
+      "text": "Lối ra của Cõi Giữa là một ô cửa nhỏ hơn bạn tưởng — bạn phải cúi xuống mới đi qua được. Phía bên kia là ánh sáng trắng. Trước khi cúi xuống, bạn quay lại nhìn toàn bộ hành trình vừa rồi một lần cuối.",
+      "is_branching": false,
+      "answers": [
+        {
+          "id": "A",
+          "text": "Bạn nhớ những người đã gặp.",
+          "label": "CONNECT dominant · People-oriented",
+          "scoring": { "A1": 1, "A3": 3, "CONNECT": 3, "Interpersonal": 2 },
+          "tie_breaker_boost": "CONNECT"
+        },
+        {
+          "id": "B",
+          "text": "Bạn nhớ những khoảnh khắc phải quyết định.",
+          "label": "ACTION dominant · Decision-oriented",
+          "scoring": { "A4": 3, "A5": 1, "BUILD": 2 },
+          "tie_breaker_boost": "BUILD"
+        },
+        {
+          "id": "C",
+          "text": "Bạn nhớ những thứ chưa hiểu — và muốn quay lại tìm hiểu tiếp.",
+          "label": "CURIOSITY dominant · Knowledge-oriented",
+          "scoring": { "A2": 3, "SOLVE": 3, "Systems": 2 },
+          "tie_breaker_boost": "SOLVE"
+        }
+      ]
+    }
+  ],
+
+  "branching_map": {
+    "Q4": {
+      "A": { "id": "rung_toi", "name": "Rừng Tối", "affects_gate": 2, "description": "Phiên bản tối của Khu Rừng Ngược" },
+      "B": { "id": "rung_dong", "name": "Rừng Đông", "affects_gate": 2, "description": "Phiên bản đông đúc" },
+      "C": { "id": "rung_im_lang", "name": "Rừng Im Lặng", "affects_gate": 2, "description": "Phiên bản yên tĩnh" },
+      "D": { "id": "rung_dac_biet", "name": "Rừng Đặc Biệt", "affects_gate": 2, "description": "Phiên bản lạ" }
+    },
+    "Q9": {
+      "A": { "id": "tp_dem", "name": "Thành Phố Đêm", "affects_gate": 3 },
+      "B": { "id": "tp_hoang_hon", "name": "Thành Phố Hoàng Hôn", "affects_gate": 3 },
+      "C": { "id": "tp_binh_minh", "name": "Thành Phố Bình Minh", "affects_gate": 3 }
+    },
+    "Q14": {
+      "A": { "id": "dd_bao", "name": "Đại Dương Bão", "affects_gate": 4 },
+      "B": { "id": "dd_yen", "name": "Đại Dương Yên", "affects_gate": 4 },
+      "C": { "id": "dd_binh_minh", "name": "Đại Dương Bình Minh", "affects_gate": 4 }
+    },
+    "Q19": {
+      "A": { "id": "cd_solo", "name": "Cung Điện Solo", "affects_gate": 5 },
+      "B": { "id": "cd_nhom", "name": "Cung Điện Nhóm", "affects_gate": 5 },
+      "C": { "id": "cd_ky_uc", "name": "Cung Điện Ký Ức", "affects_gate": 5 },
+      "D": { "id": "cd_hu_khong", "name": "Cung Điện Hư Không", "affects_gate": 5 }
+    },
+    "rule": "Branching chỉ thay đổi bối cảnh/mô tả câu hỏi tiếp theo. Scoring logic giữ nguyên. Mọi người đều đi qua đúng 24 câu."
+  },
+
+  "tie_breaker_rule": {
+    "trigger": "Top 2 breeds cách nhau < 5% match score",
+    "Q24_A": "Boost breed có CONNECT drive",
+    "Q24_B": "Boost breed có BUILD drive",
+    "Q24_C": "Boost breed có SOLVE drive"
+  }
+}

@@ -1,0 +1,891 @@
+{
+  "meta": {
+    "version": "2.0",
+    "source": "genpath-v2-logic.pdf — Thẻ 2, pages 19-32",
+    "data_sources": [
+      "WEF Future of Jobs 2025",
+      "McKinsey Global Institute 2025",
+      "PwC Global AI Jobs Barometer 2025",
+      "TopCV Recruitment Report 2024-2026",
+      "Navigos Talent Guide 2025",
+      "ManpowerGroup Vietnam 2025",
+      "ITviec Vietnam IT Salary Report 2025-2026",
+      "Adecco Vietnam Salary Guide 2025",
+      "Talentnet-Mercer Total Remuneration Survey 2025",
+      "MOLISA Government Data 2024-2025"
+    ],
+    "currency": "VND (triệu/tháng)",
+    "last_updated": "2026-04-05",
+    "warning": "KHÔNG tự thêm số liệu. Chỉ dùng data có trong PDF."
+  },
+  "vietnam_macro": {
+    "labor_force_2024": "51.9 triệu",
+    "unemployment_rate": "2.27%",
+    "youth_unemployment_15_24": "~8%",
+    "average_income_2024": "7.7 triệu VNĐ/tháng",
+    "average_income_q1_2025": "8.3 triệu VNĐ/tháng (+10% YoY)",
+    "labor_no_certification": "71.4%",
+    "informal_labor": "64.6%",
+    "sector_agriculture": "26.5% (giảm)",
+    "sector_industry": "33.4%",
+    "sector_services": "40.1% (tăng nhanh nhất)",
+    "gdp_2024": "7.09%",
+    "fdi_2024": "$38.23 tỷ (Manufacturing 68.1%)",
+    "digital_economy": "~$72.1 tỷ (14.02% GDP)",
+    "salary_increment_avg_2025": "~6.7% (cao nhất ASEAN)",
+    "willingness_to_switch_jobs": "72% (tăng từ 37% năm 2022)",
+    "it_workforce_active": "530,000-560,000",
+    "it_graduates_per_year": "~50,000-57,000",
+    "it_shortage_per_year": "150,000-200,000",
+    "it_grads_job_ready": "~30%",
+    "ai_market_vietnam_2025": "$753.4 triệu (CAGR 28.36%)",
+    "source": "MOLISA, Adecco, TopCV, ITviec, WEF"
+  },
+  "salary_benchmarks_vietnam": {
+    "by_level": {
+      "entry_level_hcmc": {
+        "min": 7,
+        "max": 10,
+        "unit": "M_VND",
+        "note": "$300-420/tháng"
+      },
+      "mid_career": {
+        "min": 15,
+        "max": 30,
+        "unit": "M_VND",
+        "note": "$590-1175"
+      },
+      "senior_expert": {
+        "min": 30,
+        "max": 70,
+        "unit": "M_VND",
+        "note": "$1175-2745"
+      },
+      "director_clevel": {
+        "min": 70,
+        "max": 100,
+        "unit": "M_VND",
+        "note": "$2745-3920+"
+      }
+    },
+    "ai_engineer_asean_usd_monthly": {
+      "vietnam": {
+        "junior": [
+          800,
+          1500
+        ],
+        "mid": [
+          1500,
+          3000
+        ],
+        "senior": [
+          3000,
+          5500
+        ]
+      },
+      "indonesia": {
+        "junior": [
+          800,
+          1600
+        ],
+        "mid": [
+          1600,
+          3200
+        ],
+        "senior": [
+          3200,
+          5500
+        ]
+      },
+      "malaysia": {
+        "junior": [
+          1200,
+          2200
+        ],
+        "mid": [
+          2200,
+          4000
+        ],
+        "senior": [
+          4000,
+          7000
+        ]
+      },
+      "singapore": {
+        "junior": [
+          3000,
+          5000
+        ],
+        "mid": [
+          5000,
+          8500
+        ],
+        "senior": [
+          8500,
+          15000
+        ]
+      }
+    },
+    "ai_skill_premium": "56% (PwC 2025)",
+    "source": "Adecco, ITviec, Navigos, PwC"
+  },
+  "industries": {
+    "marketing": {
+      "id": "marketing",
+      "name_vi": "Marketing / Digital Marketing / Brand",
+      "name_en": "Marketing / Digital Marketing",
+      "global_growth_bls": "8% (marketing managers)",
+      "global_ad_market": "$734B → $1.19T đến 2033",
+      "ai_threat": "medium",
+      "ai_threat_label": "🟡 Trung bình",
+      "workforce_status": "Thiếu digital/data-driven; thừa social media cơ bản",
+      "salary_vietnam": {
+        "digital_marketing_executive": {
+          "value": 13.2,
+          "unit": "M_VND",
+          "company": "Shopee",
+          "source": "job_salary.xlsx"
+        },
+        "assistant_brand_manager": {
+          "value": 16.6,
+          "unit": "M_VND",
+          "company": "Unilever",
+          "source": "job_salary.xlsx"
+        },
+        "marketing_operation_executive": {
+          "value": 12.65,
+          "unit": "M_VND",
+          "company": "ZaloPay",
+          "source": "job_salary.xlsx"
+        },
+        "digital_marketing_manager": {
+          "min": 30,
+          "max": 55,
+          "unit": "M_VND",
+          "source": "PDF Adecco"
+        },
+        "ecommerce_director": {
+          "min": 50,
+          "max": 80,
+          "unit": "M_VND",
+          "source": "PDF Adecco"
+        }
+      },
+      "summary_salary_mid": "13-17 triệu fresher (verified), 30-55 triệu manager (PDF)",
+      "roles_growing": [
+        "Digital Strategist",
+        "SEO/SEM Specialist",
+        "Marketing Automation Manager (+10% YoY)",
+        "Marketing Data Analyst",
+        "Social Commerce Specialist",
+        "AI-literate Marketing Strategist"
+      ],
+      "roles_declining": [
+        "Copywriter truyền thống (AI thay thế content cơ bản)",
+        "Social Media Manager tổng quát"
+      ],
+      "skills_needed": [
+        "Data analytics",
+        "Marketing automation (HubSpot, Marketo)",
+        "AI/prompt engineering",
+        "SQL/Python",
+        "Storytelling",
+        "Creative strategy"
+      ],
+      "key_stat": "Yêu cầu AI skills trong marketing JDs tăng 21%",
+      "vietnam_demand_topcv": "9.3% (top 5)",
+      "source": "BLS, TopCV, Adecco"
+    },
+    "technology": {
+      "id": "technology",
+      "name_vi": "Công nghệ / Phần mềm / Data / AI",
+      "name_en": "Technology / Software / Data / AI",
+      "global_growth_bls_software": "17% (~327,900 việc mới)",
+      "global_growth_bls_data_science": "36% — nhanh nhất",
+      "ai_ml_engineer_growth_yoy": "41.8%",
+      "ai_threat": "low_medium",
+      "ai_threat_label": "🟢 Thấp–Trung bình",
+      "workforce_status": "Thiếu nghiêm trọng (AI/ML, cybersecurity)",
+      "salary_vietnam": {
+        "entry_dev": {
+          "min": 12.4,
+          "max": 12.4,
+          "unit": "M_VND",
+          "note": "trung vị ITviec"
+        },
+        "senior_dev": {
+          "min": 40,
+          "max": 70,
+          "unit": "M_VND"
+        },
+        "ai_ml_engineer": {
+          "min": 70,
+          "max": 100,
+          "unit": "M_VND",
+          "note": "100+ cho senior"
+        },
+        "cto_cio": {
+          "min": 101.25,
+          "max": 101.25,
+          "unit": "M_VND",
+          "note": "trung vị ITviec"
+        },
+        "tech_lead": {
+          "min": 51.8,
+          "max": 51.8,
+          "unit": "M_VND"
+        },
+        "data_engineer": {
+          "min": 56.9,
+          "max": 56.9,
+          "unit": "M_VND"
+        },
+        "data_analyst_scientist": {
+          "min": 40.65,
+          "max": 40.65,
+          "unit": "M_VND"
+        },
+        "backend_senior": {
+          "min": 54.9,
+          "max": 54.9,
+          "unit": "M_VND"
+        },
+        "backend_entry": {
+          "min": 12.4,
+          "max": 12.4,
+          "unit": "M_VND"
+        },
+        "ai_ml_engineer_verified": {
+          "value": 28.46,
+          "unit": "M_VND",
+          "company": "TechX",
+          "source": "job_salary.xlsx"
+        },
+        "frontend_backend_developer_verified": {
+          "value": 20.4,
+          "unit": "M_VND",
+          "company": "Zalo",
+          "source": "job_salary.xlsx"
+        },
+        "data_analyst_verified": {
+          "value": 21.87,
+          "unit": "M_VND",
+          "company": "FE Credit",
+          "source": "job_salary.xlsx"
+        }
+      },
+      "summary_salary_mid": "20-28 triệu fresher (verified), 40-100+ triệu senior (PDF ITviec/Adecco)",
+      "roles_growing": [
+        "AI/ML Engineer (#1)",
+        "Data Scientist",
+        "Data Engineer",
+        "Cloud Architect",
+        "DevOps",
+        "Cybersecurity Specialist",
+        "AI Product Manager",
+        "MLOps Engineer"
+      ],
+      "roles_declining": [
+        "Junior developer entry-level (cạnh tranh rất cao, AI code generation)",
+        "QA/testing cơ bản"
+      ],
+      "key_stats": [
+        "AI/ML roles chiếm 50% tech postings (từ 10% năm 2023)",
+        "Cybersecurity tăng lương 55%",
+        "Thiếu 150,000-200,000 IT professionals/năm",
+        "Chỉ ~30% sinh viên tốt nghiệp có kỹ năng thực tế"
+      ],
+      "vietnam_demand_topcv": "12.2% (top 3 nhưng giảm ~1%)",
+      "salary_topcv": {
+        "chuyen_vien": "24.5 triệu",
+        "truong_nhom": "~35 triệu",
+        "truong_phong": "lên đến 52 triệu (+30% YoY)"
+      },
+      "source": "BLS, ITviec, TopCV, Adecco, ManpowerGroup"
+    },
+    "finance": {
+      "id": "finance",
+      "name_vi": "Tài chính / Ngân hàng / Fintech",
+      "name_en": "Finance / Banking / Fintech",
+      "global_growth_bls": "15% (financial managers)",
+      "global_fintech_market": "$245B → $1.5 nghìn tỷ đến 2030 (BCG)",
+      "vietnam_fintech_market": "$34.5B → $63.87B đến 2028",
+      "ai_threat": "high_routine_low_advisory",
+      "ai_threat_label": "🔴 Cao (routine) / Thấp (advisory)",
+      "workforce_status": "Thiếu (compliance, AI)",
+      "salary_vietnam": {
+        "investment_analyst": {
+          "value": 20.88,
+          "unit": "M_VND",
+          "company": "Deloitte",
+          "source": "job_salary.xlsx"
+        },
+        "financial_risk_analyst": {
+          "value": 17.14,
+          "unit": "M_VND",
+          "company": "EY",
+          "source": "job_salary.xlsx"
+        }
+      },
+      "summary_salary_mid": "17-21 triệu (verified)",
+      "roles_growing": [
+        "FinTech Software Engineers (#2 fastest-growing toàn cầu — WEF)",
+        "Blockchain Developers",
+        "Compliance/RegTech",
+        "AI Risk Analysts",
+        "Credit Risk Modelers (+200%)",
+        "Financial Crime roles (+52%)"
+      ],
+      "roles_declining": [
+        "Bank Tellers (#2 suy giảm nhanh nhất toàn cầu — WEF)",
+        "Data Entry",
+        "Basic Bookkeeping"
+      ],
+      "skills_needed": [
+        "Python",
+        "SQL",
+        "ML/AI",
+        "Blockchain",
+        "Cloud",
+        "Financial APIs",
+        "Cybersecurity"
+      ],
+      "certifications": [
+        "CFA",
+        "CPA",
+        "FRM"
+      ],
+      "key_stats": [
+        "Gartner dự báo đội ngũ finance có thể giảm 50% đến 2030 cho routine tasks",
+        "Fintech startups VN tăng từ 1,600 lên 3,000+",
+        "Ngành tăng 15% năm 2025"
+      ],
+      "source": "BLS, BCG, WEF, Gartner"
+    },
+    "design": {
+      "id": "design",
+      "name_vi": "Thiết kế / Creative / UX",
+      "name_en": "Design / Creative / UX",
+      "global_growth_bls": "~8% (web/digital design)",
+      "digital_creator_positions_us": "200K (2020) → 1.5 triệu (2024)",
+      "ai_threat": "medium_high",
+      "ai_threat_label": "🟠 TB–Cao (sản xuất) / Thấp (chiến lược)",
+      "workforce_status": "Thừa junior; thiếu senior chiến lược",
+      "salary_vietnam": {
+        "ui_ux_designer": {
+          "value": 16.19,
+          "unit": "M_VND",
+          "company": "Hitachi",
+          "source": "job_salary.xlsx"
+        },
+        "graphic_designer": {
+          "value": 12.25,
+          "unit": "M_VND",
+          "company": "Shopee",
+          "source": "job_salary.xlsx"
+        }
+      },
+      "summary_salary_mid": "12-16 triệu (verified)",
+      "roles_growing": [
+        "AI-augmented UX Designer",
+        "Product Designer có business/data skills",
+        "UX Researcher",
+        "Design System Architect",
+        "Motion Designer",
+        "AR/VR Experience Designer",
+        "Accessibility Specialist"
+      ],
+      "roles_declining": [
+        "Junior UX (cạnh tranh cực kỳ cao, rất ít cơ hội)",
+        "UI pixel-pushers",
+        "Graphic Designer cơ bản (AI tools)"
+      ],
+      "skills_needed": [
+        "Figma",
+        "AI design tools",
+        "Business acumen (ROI justification)",
+        "Data visualization",
+        "Strategic thinking"
+      ],
+      "key_stats": [
+        "Senior designers giờ output bằng team 3 người ('Super-IC' trend)",
+        "80% UX researchers dùng AI nhưng 91% lo về accuracy"
+      ],
+      "source": "BLS, industry reports"
+    },
+    "hr": {
+      "id": "hr",
+      "name_vi": "Nhân sự / Talent Acquisition",
+      "name_en": "HR / Talent Acquisition",
+      "global_growth_bls": "5% (HR managers)",
+      "hr_tech_market_2025": "$94 tỷ",
+      "ai_adoption_in_hr": "73% HR professionals dùng AI tools",
+      "ai_threat": "medium_high",
+      "ai_threat_label": "🟠 TB–Cao (admin) / Thấp (strategic)",
+      "workforce_status": "Thiếu (analytics, tech)",
+      "salary_vietnam": {
+        "hr_business_partner": {
+          "value": 13.3,
+          "unit": "M_VND",
+          "company": "Bytedance",
+          "source": "job_salary.xlsx"
+        },
+        "recruiter": {
+          "value": 16.14,
+          "unit": "M_VND",
+          "company": "Vinamilk",
+          "source": "job_salary.xlsx"
+        }
+      },
+      "summary_salary_mid": "13-16 triệu (verified)",
+      "roles_growing": [
+        "People Analytics Specialist",
+        "Talent Intelligence Manager",
+        "L&D/Upskilling Manager",
+        "HR Technology Specialist",
+        "Employee Experience Designer"
+      ],
+      "roles_declining": [
+        "HR Admin Assistant",
+        "Manual Payroll Processor",
+        "Traditional Recruiter"
+      ],
+      "skills_needed": [
+        "HRIS (Workday, SAP SuccessFactors)",
+        "People analytics",
+        "Predictive analytics",
+        "Change management",
+        "Skills-based hiring"
+      ],
+      "key_stats": [
+        "HRBP có tỷ lệ thất nghiệp chỉ 0.8%",
+        "Bersin ước tính 30-40% HR jobs có thể tự động hóa"
+      ],
+      "source": "BLS, Bersin"
+    },
+    "sales": {
+      "id": "sales",
+      "name_vi": "Kinh doanh / Business Development / Sales",
+      "name_en": "Business Development / Sales",
+      "global_growth_bls": "Varies",
+      "ai_threat": "high_transactional",
+      "ai_threat_label": "🔴 Cao (transactional) / Thấp (complex B2B)",
+      "workforce_status": "Thiếu consultative sellers; thừa transactional reps",
+      "salary_vietnam": {
+        "b2b_enterprise_sales": {
+          "value": 15.34,
+          "unit": "M_VND",
+          "company": "DKSH",
+          "source": "job_salary.xlsx"
+        },
+        "business_development": {
+          "value": 18.36,
+          "unit": "M_VND",
+          "company": "MB Bank",
+          "source": "job_salary.xlsx"
+        }
+      },
+      "summary_salary_mid": "15-18 triệu (verified)",
+      "roles_growing": [
+        "Revenue Operations Analyst",
+        "Customer Success Manager",
+        "AI-augmented Sales Strategist",
+        "B2B Enterprise Sales",
+        "Sales Enablement Specialist"
+      ],
+      "roles_declining": [
+        "Cold-calling SDRs",
+        "Manual data entry sales reps"
+      ],
+      "skills_needed": [
+        "CRM mastery (Salesforce, HubSpot)",
+        "AI tool integration",
+        "Emotional intelligence",
+        "Consultative selling",
+        "Data interpretation"
+      ],
+      "key_stats": [
+        "Nhu cầu tuyển dụng tại VN: 47.6% — #1 nhiều nhất (TopCV, 3 năm liên tiếp)",
+        "Dự kiến +8.3% năm 2025",
+        "Companies dùng AI thấy 50% cải thiện forecasting, 65% giảm lost sales",
+        "AI có thể thay thế >50% entry-level sales rep tasks"
+      ],
+      "vietnam_demand_topcv": "47.6% (#1)",
+      "source": "TopCV, industry reports"
+    },
+    "operations": {
+      "id": "operations",
+      "name_vi": "Operations / Supply Chain",
+      "name_en": "Operations / Supply Chain",
+      "global_growth_bls_logisticians": "17% — gấp 5x trung bình",
+      "global_growth_operations_research": "21%",
+      "ai_threat": "high_warehouse_medium_planning",
+      "ai_threat_label": "🔴 Cao (warehouse) / Trung bình (planning)",
+      "workforce_status": "Thiếu nghiêm trọng toàn cầu",
+      "salary_vietnam": {
+        "supply_chain_planner": {
+          "value": 15.69,
+          "unit": "M_VND",
+          "company": "Maersk",
+          "source": "job_salary.xlsx"
+        },
+        "logistics_operation": {
+          "value": 14.99,
+          "unit": "M_VND",
+          "company": "Giao Hàng Nhanh",
+          "source": "job_salary.xlsx"
+        }
+      },
+      "summary_salary_mid": "15-16 triệu (verified)",
+      "roles_growing": [
+        "AI Logistics Manager",
+        "Predictive Supply Chain Analyst",
+        "Supply Chain Data Scientist",
+        "Sustainability/ESG Compliance Officer",
+        "Robot Fleet Manager"
+      ],
+      "roles_declining": [
+        "Manual Inventory Clerks",
+        "Traditional Route Planners",
+        "Warehouse Pickers"
+      ],
+      "key_stats": [
+        "AI giúp giảm chi phí logistics 15%, cải thiện inventory 35%",
+        "Đến 2030, 50% quyết định supply chain sẽ dùng AI agents",
+        "Top ngành tăng lương nhanh nhất (Talentnet-Mercer)",
+        "Manufacturing chiếm 38% nhu cầu tuyển dụng Q2/2025"
+      ],
+      "source": "BLS, Talentnet-Mercer, ManpowerGroup"
+    },
+    "consulting": {
+      "id": "consulting",
+      "name_vi": "Tư vấn / Strategy",
+      "name_en": "Consulting / Strategy",
+      "global_growth_bls": "9% (management analysts), 98,100 openings/năm",
+      "global_market_size": "~$400 tỷ (2025), CAGR 8%",
+      "digital_transformation_consulting_cagr": "28.5%",
+      "sustainability_consulting_cagr": "15.16%",
+      "ai_threat": "medium",
+      "ai_threat_label": "🟡 Trung bình",
+      "workforce_status": "Cân bằng",
+      "salary_vietnam": {
+        "_note": "Không có data từ job_salary.xlsx. Dùng PDF range: 20-50 triệu (Adecco/Navigos)"
+      },
+      "summary_salary_mid": "20-50 triệu",
+      "roles_growing": [
+        "Digital Transformation Consultant",
+        "AI/Data Analytics Consultant",
+        "ESG/Sustainability Advisor",
+        "Cybersecurity Consultant",
+        "Fractional/Independent Consultant"
+      ],
+      "roles_declining": [
+        "Generalist Strategy Consultant",
+        "Junior Analyst (AI tự động hóa phân tích cơ bản)"
+      ],
+      "key_stat": "Chuyên môn hóa sâu (niche) quan trọng hơn generalist. Deep sector expertise ngày càng có giá trị hơn kỹ năng chung.",
+      "source": "BLS, industry reports"
+    }
+  },
+  "global_top_skills_2025_2030": {
+    "hard_skills": [
+      {
+        "rank": 1,
+        "skill": "AI & Machine Learning",
+        "note": "100% báo cáo; phụ cấp 28-56%"
+      },
+      {
+        "rank": 2,
+        "skill": "Data Analytics / Data Science",
+        "note": "tăng 36% (BLS), mọi ngành"
+      },
+      {
+        "rank": 3,
+        "skill": "Cloud Computing (AWS, Azure, GCP)",
+        "note": "thiếu trầm trọng APAC"
+      },
+      {
+        "rank": 4,
+        "skill": "Cybersecurity",
+        "note": "lương tăng 55% VN; 92% DN SEA cần"
+      },
+      {
+        "rank": 5,
+        "skill": "Python / SQL",
+        "note": "#1 cho AI/data; cần trong cả marketing, finance"
+      },
+      {
+        "rank": 6,
+        "skill": "Process Automation / RPA",
+        "note": "top 15 skills LinkedIn"
+      },
+      {
+        "rank": 7,
+        "skill": "Blockchain / Web3",
+        "note": "limited supply, high demand"
+      },
+      {
+        "rank": 8,
+        "skill": "Sustainability / ESG",
+        "note": "30+ triệu green jobs ASEAN đến 2030"
+      }
+    ],
+    "soft_skills": [
+      {
+        "rank": 1,
+        "skill": "AI Literacy",
+        "note": "#1 tăng nhanh nhất (LinkedIn); xuất hiện gấp 6x trong JDs"
+      },
+      {
+        "rank": 2,
+        "skill": "Adaptability & Resilience",
+        "note": "#5 WEF; 83% DN SEA cần"
+      },
+      {
+        "rank": 3,
+        "skill": "Creative & Analytical Thinking",
+        "note": "#4 và #9 WEF"
+      },
+      {
+        "rank": 4,
+        "skill": "Leadership & Stakeholder Management",
+        "note": "#7 WEF"
+      },
+      {
+        "rank": 5,
+        "skill": "Communication & Collaboration",
+        "note": "top 8 McKinsey"
+      }
+    ],
+    "source": "WEF, LinkedIn, McKinsey, PwC, BLS"
+  },
+  "undersupply_vs_oversupply": {
+    "undersupply": [
+      {
+        "area": "IT & Data",
+        "detail": "81% DN APAC thiếu (ManpowerGroup)"
+      },
+      {
+        "area": "AI/ML Specialists",
+        "detail": "nhu cầu tăng 41.8%/năm, chỉ 67,000 AI engineers toàn SEA"
+      },
+      {
+        "area": "Cybersecurity",
+        "detail": "thiếu toàn cầu, VN tăng lương 55%"
+      },
+      {
+        "area": "Semiconductor",
+        "detail": "VN mục tiêu 50,000 kỹ sư đến 2030 (rất thiếu)"
+      },
+      {
+        "area": "Supply Chain / Logistics",
+        "detail": "top ngành thiếu, 17-21% tăng trưởng"
+      },
+      {
+        "area": "Healthcare / Life Sciences",
+        "detail": "tăng do dân số già hóa"
+      },
+      {
+        "area": "Green/Sustainability",
+        "detail": "30+ triệu jobs ASEAN nhưng rất ít nhân lực"
+      }
+    ],
+    "oversupply": [
+      {
+        "area": "Junior UX/UI Designer",
+        "detail": "quá nhiều ứng viên so với vị trí tuyển"
+      },
+      {
+        "area": "Junior Developer entry-level",
+        "detail": "AI code generation giảm nhu cầu"
+      },
+      {
+        "area": "Generic Social Media Manager",
+        "detail": "AI thay thế phần lớn"
+      },
+      {
+        "area": "Administrative / Data Entry",
+        "detail": "đang bị automated"
+      },
+      {
+        "area": "Traditional Bank Tellers / Cashiers",
+        "detail": "giảm mạnh toàn cầu"
+      },
+      {
+        "area": "Basic HR Admin",
+        "detail": "30-40% có thể tự động hóa"
+      },
+      {
+        "area": "Cold-calling SDRs",
+        "detail": "AI outreach thay thế"
+      }
+    ],
+    "source": "ManpowerGroup, WEF, TopCV, industry reports"
+  },
+  "breed_to_industry_map": {
+    "_comment": "Map 7 breeds sang 8 industries — dùng cho forecast cross-reference",
+    "tabby": {
+      "primary": [
+        "operations",
+        "finance"
+      ],
+      "secondary": [
+        "consulting"
+      ]
+    },
+    "siamese": {
+      "primary": [
+        "hr",
+        "marketing"
+      ],
+      "secondary": [
+        "consulting"
+      ]
+    },
+    "bengal": {
+      "primary": [
+        "technology",
+        "consulting"
+      ],
+      "secondary": [
+        "finance"
+      ]
+    },
+    "persian": {
+      "primary": [
+        "design"
+      ],
+      "secondary": [
+        "marketing"
+      ]
+    },
+    "mainecoon": {
+      "primary": [
+        "sales",
+        "consulting"
+      ],
+      "secondary": [
+        "operations"
+      ]
+    },
+    "ragdoll": {
+      "primary": [
+        "hr"
+      ],
+      "secondary": [
+        "design"
+      ]
+    },
+    "munchkin": {
+      "primary": [
+        "design",
+        "technology"
+      ],
+      "secondary": [
+        "marketing"
+      ]
+    }
+  },
+  "verified_salary_roles": {
+    "_doc": "Dữ liệu lương đã đối chiếu từ job_salary.xlsx — job postings thật tại VN 2025-2026",
+    "data_date": "2026-04",
+    "roles": [
+      {
+        "industry": "Tech / Software / AI",
+        "role": "AI/ML Engineer",
+        "salary_trieu": 28.46,
+        "company": "TechX"
+      },
+      {
+        "industry": "Tech / Software / AI",
+        "role": "Front & Back-end Developer",
+        "salary_trieu": 20.4,
+        "company": "Zalo"
+      },
+      {
+        "industry": "Tech / Software / AI",
+        "role": "Data Analyst",
+        "salary_trieu": 21.87,
+        "company": "FE Credit"
+      },
+      {
+        "industry": "Marketing / Brand",
+        "role": "Digital Marketing Executive",
+        "salary_trieu": 13.2,
+        "company": "Shopee"
+      },
+      {
+        "industry": "Marketing / Brand",
+        "role": "Assistant Brand Manager",
+        "salary_trieu": 16.6,
+        "company": "Unilever"
+      },
+      {
+        "industry": "Marketing / Brand",
+        "role": "Marketing Operation Executive",
+        "salary_trieu": 12.65,
+        "company": "ZaloPay"
+      },
+      {
+        "industry": "Finance / Fintech",
+        "role": "Investment Analyst",
+        "salary_trieu": 20.88,
+        "company": "Deloitte"
+      },
+      {
+        "industry": "Finance / Fintech",
+        "role": "Financial Risk Analyst",
+        "salary_trieu": 17.14,
+        "company": "EY"
+      },
+      {
+        "industry": "Design / Creative",
+        "role": "UI/UX Designer",
+        "salary_trieu": 16.19,
+        "company": "Hitachi"
+      },
+      {
+        "industry": "Design / Creative",
+        "role": "Graphic Designer",
+        "salary_trieu": 12.25,
+        "company": "Shopee"
+      },
+      {
+        "industry": "HR / Talent",
+        "role": "HR Business Partner",
+        "salary_trieu": 13.3,
+        "company": "Bytedance"
+      },
+      {
+        "industry": "HR / Talent",
+        "role": "Recruiter",
+        "salary_trieu": 16.14,
+        "company": "Vinamilk"
+      },
+      {
+        "industry": "Sales / BizDev",
+        "role": "B2B Enterprise Sales",
+        "salary_trieu": 15.34,
+        "company": "DKSH"
+      },
+      {
+        "industry": "Sales / BizDev",
+        "role": "Business Development",
+        "salary_trieu": 18.36,
+        "company": "MB Bank"
+      },
+      {
+        "industry": "Ops / Supply Chain",
+        "role": "Supply Chain Planner",
+        "salary_trieu": 15.69,
+        "company": "Maersk"
+      },
+      {
+        "industry": "Ops / Supply Chain",
+        "role": "Logistics Operation",
+        "salary_trieu": 14.99,
+        "company": "Giao Hàng Nhanh"
+      }
+    ]
+  }
+}

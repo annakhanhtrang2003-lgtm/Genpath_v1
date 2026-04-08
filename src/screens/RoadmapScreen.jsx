@@ -6,7 +6,7 @@ import useGameStore from '../store/gameStore';
 const PRIORITY_STYLES = {
   1: 'bg-red-100 text-red-700',
   2: 'bg-amber-100 text-amber-700',
-  3: 'bg-gray-100 text-gray-500',
+  3: 'bg-gray-100 text-[#999999]',
 };
 
 const PRIORITY_LABELS = {
@@ -19,7 +19,7 @@ const CATEGORY_COLORS = {
   core: 'bg-blue-50 text-blue-600',
   tool: 'bg-violet-50 text-violet-600',
   power: 'bg-emerald-50 text-emerald-600',
-  soft: 'bg-pink-50 text-pink-600',
+  soft: 'bg-momo-soft text-momo',
   experience: 'bg-amber-50 text-amber-600',
   strategy: 'bg-indigo-50 text-indigo-600',
 };
@@ -44,20 +44,20 @@ function QuickWinsSection({ quickWins }) {
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl border-2 border-purple-200 shadow-sm p-6">
+    <div className="bg-gradient-to-br from-momo-soft to-white rounded-2xl border-2 border-momo-light/30 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">
-          Quick Wins — Thang dau tien
+        <h2 className="text-lg font-semibold text-[#1A1A1A]">
+          Quick Wins — Tháng đầu tiên
         </h2>
-        <span className="text-sm font-medium text-purple-600">
+        <span className="text-sm font-medium text-momo">
           {completed}/{quickWins.length}
         </span>
       </div>
 
       {/* Progress bar */}
-      <div className="h-2 bg-purple-100 rounded-full overflow-hidden mb-5">
+      <div className="h-2 bg-momo-soft rounded-full overflow-hidden mb-5">
         <div
-          className="h-full bg-purple-500 rounded-full transition-all duration-500 ease-out"
+          className="h-full bg-momo rounded-full transition-all duration-500 ease-out"
           style={{ width: `${(completed / quickWins.length) * 100}%` }}
         />
       </div>
@@ -70,15 +70,15 @@ function QuickWinsSection({ quickWins }) {
             onClick={() => toggle(i)}
             className={`w-full flex items-start gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
               checked[i]
-                ? 'bg-purple-50/80 opacity-60'
-                : 'bg-white hover:bg-gray-50'
+                ? 'bg-momo-soft/80 opacity-60'
+                : 'bg-white hover:bg-[#F8F8F8]'
             }`}
           >
             {/* Checkbox */}
             <span
               className={`shrink-0 mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
                 checked[i]
-                  ? 'bg-purple-500 border-purple-500 text-white'
+                  ? 'bg-momo border-momo text-white'
                   : 'border-gray-300 bg-white'
               }`}
             >
@@ -90,14 +90,14 @@ function QuickWinsSection({ quickWins }) {
             </span>
 
             <div className="min-w-0 flex-1">
-              <p className={`text-sm font-medium ${checked[i] ? 'line-through text-gray-400' : 'text-gray-800'}`}>
+              <p className={`text-sm font-medium ${checked[i] ? 'line-through text-[#999999]' : 'text-[#1A1A1A]'}`}>
                 {qw.title}
               </p>
               <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-[#999999]">
                   {qw.time}
                 </span>
-                <span className="text-xs text-purple-500 font-medium">
+                <span className="text-xs text-momo font-medium">
                   {qw.output}
                 </span>
               </div>
@@ -114,7 +114,6 @@ function QuickWinsSection({ quickWins }) {
 function YearCard({ yearNum, yearData, isCurrent }) {
   const icon = YEAR_ICONS[yearNum - 1] || '📌';
   const isPast = yearData.status === 'past';
-  const isFuture = yearData.status === 'future';
 
   return (
     <div className="relative flex gap-4">
@@ -123,10 +122,10 @@ function YearCard({ yearNum, yearData, isCurrent }) {
         <div
           className={`w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 ${
             isCurrent
-              ? 'bg-purple-500 text-white shadow-lg shadow-purple-200 ring-4 ring-purple-100'
+              ? 'bg-momo text-white shadow-[0_4px_16px_rgba(165,0,100,0.12)] ring-4 ring-momo-soft'
               : isPast
-                ? 'bg-gray-200 text-gray-400'
-                : 'bg-white border-2 border-gray-200 text-gray-400'
+                ? 'bg-gray-200 text-[#999999]'
+                : 'bg-white border-2 border-gray-200 text-[#999999]'
           }`}
         >
           {icon}
@@ -142,12 +141,12 @@ function YearCard({ yearNum, yearData, isCurrent }) {
         }`}
       >
         <div className="flex items-center gap-2 mb-3">
-          <h3 className={`text-base font-semibold ${isCurrent ? 'text-purple-700' : 'text-gray-700'}`}>
+          <h3 className={`text-base font-semibold ${isCurrent ? 'text-momo' : 'text-[#1A1A1A]'}`}>
             {yearData.label}
           </h3>
           {isCurrent && (
-            <span className="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full font-medium">
-              Hien tai
+            <span className="text-xs bg-momo-soft text-momo px-2 py-0.5 rounded-full font-medium">
+              Hiện tại
             </span>
           )}
         </div>
@@ -176,7 +175,7 @@ function TaskItem({ task, dimmed }) {
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-2 px-4 py-3 text-left cursor-pointer hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center gap-2 px-4 py-3 text-left cursor-pointer hover:bg-[#F8F8F8] transition-colors"
       >
         {/* Priority badge */}
         <span
@@ -188,7 +187,7 @@ function TaskItem({ task, dimmed }) {
         </span>
 
         {/* Skill name */}
-        <span className="flex-1 text-sm font-medium text-gray-800 truncate">
+        <span className="flex-1 text-sm font-medium text-[#1A1A1A] truncate">
           {task.skill}
         </span>
 
@@ -196,7 +195,7 @@ function TaskItem({ task, dimmed }) {
         {task.category && (
           <span
             className={`shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full ${
-              CATEGORY_COLORS[task.category] || 'bg-gray-50 text-gray-500'
+              CATEGORY_COLORS[task.category] || 'bg-gray-50 text-[#999999]'
             }`}
           >
             {task.category}
@@ -205,7 +204,7 @@ function TaskItem({ task, dimmed }) {
 
         {/* Time */}
         {task.time_weeks > 0 && (
-          <span className="shrink-0 text-xs text-gray-400">
+          <span className="shrink-0 text-xs text-[#999999]">
             {task.time_weeks}w
           </span>
         )}
@@ -227,10 +226,10 @@ function TaskItem({ task, dimmed }) {
       {expanded && (
         <div className="px-4 pb-3 border-t border-gray-100">
           {task.specifics && (
-            <p className="text-xs text-gray-500 mt-2">{task.specifics}</p>
+            <p className="text-xs text-[#666666] mt-2">{task.specifics}</p>
           )}
           {task.priority_note && (
-            <p className="text-xs text-amber-500 mt-1 italic">{task.priority_note}</p>
+            <p className="text-xs text-momo-warning mt-1 italic">{task.priority_note}</p>
           )}
           {task.is_quick_win && (
             <span className="inline-block mt-2 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
@@ -247,7 +246,7 @@ function TaskItem({ task, dimmed }) {
                   href={res.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-purple-600 hover:text-purple-800 underline underline-offset-2"
+                  className="inline-flex items-center gap-1 text-xs text-momo hover:text-momo-dark underline underline-offset-2"
                 >
                   {res.name}
                   <CostBadge cost={res.cost} />
@@ -311,9 +310,9 @@ function ResourcesPanel({ years }) {
   if (allResources.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        Tai nguyen hoc tap
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-6">
+      <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">
+        Tài nguyên học tập
       </h2>
       <div className="grid gap-3 sm:grid-cols-2">
         {allResources.map((res) => (
@@ -322,30 +321,30 @@ function ResourcesPanel({ years }) {
             href={res.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 hover:bg-purple-50 transition-colors group"
+            className="flex items-start gap-3 p-3 rounded-xl bg-[#F8F8F8] hover:bg-momo-soft transition-colors group"
           >
-            <span className="shrink-0 mt-0.5 w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-sm group-hover:border-purple-200">
+            <span className="shrink-0 mt-0.5 w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-sm group-hover:border-momo-light/30">
               {res.type === 'course' ? '📚' : res.type === 'video' ? '🎬' : res.type === 'tool' ? '🔧' : res.type === 'cert' ? '🏅' : res.type === 'community' ? '👥' : '🔗'}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-gray-800 group-hover:text-purple-700 truncate">
+              <p className="text-sm font-medium text-[#1A1A1A] group-hover:text-momo truncate">
                 {res.name}
               </p>
               <div className="flex items-center gap-2 mt-1">
                 <CostBadge cost={res.cost} />
                 {res.language && (
-                  <span className="text-[9px] font-medium text-gray-400 uppercase">
+                  <span className="text-[9px] font-medium text-[#999999] uppercase">
                     {res.language === 'both' ? 'EN/VI' : res.language.toUpperCase()}
                   </span>
                 )}
                 {res.note && (
-                  <span className="text-[10px] text-gray-400 truncate">
+                  <span className="text-[10px] text-[#999999] truncate">
                     {res.note}
                   </span>
                 )}
               </div>
             </div>
-            <svg className="w-4 h-4 text-gray-300 group-hover:text-purple-400 shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4 text-gray-300 group-hover:text-momo-light shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
@@ -380,22 +379,27 @@ export default function RoadmapScreen() {
   const totalYears = yearEntries.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-white">
+    <div className="min-h-screen bg-gradient-to-b from-momo-soft via-white to-white">
       {/* Top accent */}
-      <div className="w-full h-2 bg-gradient-to-r from-purple-400 via-pink-400 to-amber-400" />
+      <div className="w-full h-2 bg-gradient-to-r from-momo via-momo-light to-momo-warning" />
 
       <div className="max-w-2xl mx-auto px-5 py-10 space-y-6">
+        {/* Logo */}
+        <h2 className="text-[32px] font-bold text-momo text-center tracking-tight">
+          GenPath 💗
+        </h2>
+
         {/* 1. Header */}
         <div className="text-center">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-2xl md:text-[28px] font-bold text-[#1A1A1A] leading-tight">
             {breed_name || 'Your Breed'}
             {major ? ` × ${major}` : ''}
           </h1>
-          <p className="text-purple-600 font-medium mt-1">
-            Lo trinh {totalYears} nam
+          <p className="text-momo font-medium mt-1">
+            Lộ trình {totalYears} năm
           </p>
           {career_cluster && (
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-sm text-[#999999] mt-2">
               {career_cluster}
             </p>
           )}
@@ -406,11 +410,11 @@ export default function RoadmapScreen() {
 
         {/* 3. Timeline View */}
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-5">
-            Lo trinh theo nam
+          <h2 className="text-lg font-semibold text-[#1A1A1A] mb-5">
+            Lộ trình theo năm
           </h2>
           <div>
-            {yearEntries.map(([yearKey, yearData], index) => {
+            {yearEntries.map(([yearKey, yearData]) => {
               const yearNum = parseInt(yearKey.replace('year_', ''), 10);
               return (
                 <YearCard
@@ -431,9 +435,9 @@ export default function RoadmapScreen() {
         <div className="pt-4 pb-8">
           <button
             onClick={() => navigate('/result')}
-            className="w-full bg-white hover:bg-gray-50 text-purple-600 font-semibold py-4 px-6 rounded-xl border-2 border-purple-200 hover:border-purple-300 shadow-sm transition-all active:scale-95 cursor-pointer"
+            className="w-full bg-white hover:bg-[#F8F8F8] text-momo font-semibold py-4 px-8 rounded-2xl border-2 border-momo-soft hover:border-momo-light/50 shadow-[0_2px_8px_rgba(165,0,100,0.08)] transition-all active:scale-95 cursor-pointer"
           >
-            &larr; Quay lai ket qua
+            &larr; Quay lại kết quả
           </button>
         </div>
       </div>

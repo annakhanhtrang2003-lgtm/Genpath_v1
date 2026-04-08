@@ -57,6 +57,19 @@ const useGameStore = create((set, get) => ({
       };
     }),
 
+  submitAnswerV2: (questionId, answerId, scoring) =>
+    set((state) => {
+      const updatedScores = { ...state.rawScores };
+      for (const [key, weight] of Object.entries(scoring)) {
+        updatedScores[key] = (updatedScores[key] || 0) + weight;
+      }
+      return {
+        rawScores: updatedScores,
+        answers: [...state.answers, { questionId, answerId }],
+        currentQuestion: state.currentQuestion + 1,
+      };
+    }),
+
   calculateResult: () => {
     const { rawScores, userContext, tieBreakBoost } = get();
 

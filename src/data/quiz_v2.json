@@ -1,0 +1,341 @@
+{
+  "meta": {
+    "version": "2.0",
+    "total_questions": 12,
+    "sections": 2,
+    "source": "Rút gọn từ scoring_data.json (24 câu → 12 câu). Scoring weights giữ nguyên 100%.",
+    "removed": {
+      "branching": ["Q4", "Q9", "Q14", "Q19"],
+      "flagged": ["Q12", "Q18", "Q23"],
+      "tie_breaker": ["Q24"],
+      "cut": ["Q6", "Q10", "Q13", "Q20"]
+    }
+  },
+
+  "sections": [
+    {
+      "id": "section_a",
+      "title": "Phần 1: Bạn là ai?",
+      "subtitle": "Khám phá sở thích và động lực bên trong",
+      "icon": "🔍",
+      "color": "#E1BEE7",
+      "questions": [
+        {
+          "id": "A1",
+          "original_id": "Q5",
+          "context": "Bạn đang ngồi trong thư viện, lướt qua một bài báo về xu hướng ngành mới mà bạn chưa từng nghe tên.",
+          "text": "Phản ứng đầu tiên của bạn là gì?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Dừng lại đọc kỹ, tìm hiểu ngành này hoạt động ra sao",
+              "scoring": { "A2": 3, "A4": -1, "A5": 1, "SOLVE": 2, "Systems": 2 }
+            },
+            {
+              "id": "B",
+              "text": "Ghi nhận rồi lướt tiếp — biết vậy là đủ",
+              "scoring": { "A2": -2, "A4": 2, "A5": -1 }
+            },
+            {
+              "id": "C",
+              "text": "Thử tìm ai đó đang làm ngành này để hỏi trực tiếp",
+              "scoring": { "A4": 2, "CREATE": 1, "VisualCreative": 1 }
+            }
+          ]
+        },
+        {
+          "id": "A2",
+          "original_id": "Q7",
+          "context": "Nhóm bạn share một tài liệu hướng dẫn intern nhưng file bị lỗi font, đọc rất khó.",
+          "text": "Bạn sẽ làm gì?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Cố đọc hết dù khó — thông tin quan trọng hơn",
+              "scoring": { "A2": 2, "A4": 2, "SOLVE": 1, "Numerical": 1 }
+            },
+            {
+              "id": "B",
+              "text": "Đọc lướt phần nào đọc được, bỏ qua phần lỗi",
+              "scoring": { "A2": 1, "A4": -1, "A5": 1 }
+            },
+            {
+              "id": "C",
+              "text": "Bỏ qua — chờ ai đó fix rồi đọc sau",
+              "scoring": { "A2": -2, "A5": -1 }
+            }
+          ]
+        },
+        {
+          "id": "A3",
+          "original_id": "Q8",
+          "context": "Trong giờ nghỉ ở quán cà phê, bạn thấy một người ngồi một mình đang loay hoay với một bài tập Excel phức tạp.",
+          "text": "Bạn sẽ phản ứng thế nào?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Liếc xem bài toán có thú vị không — muốn thử giải",
+              "scoring": { "A2": 3, "A4": 1, "SOLVE": 2, "Numerical": 2 }
+            },
+            {
+              "id": "B",
+              "text": "Bắt chuyện hỏi họ đang làm gì, có cần giúp không",
+              "scoring": { "A1": 2, "A3": 1, "CONNECT": 1, "Interpersonal": 1 }
+            },
+            {
+              "id": "C",
+              "text": "Ngồi gần nhưng không hỏi — tôn trọng không gian riêng",
+              "scoring": { "A1": -1, "A3": 3, "A4": -1, "CONNECT": 1, "Interpersonal": 1 }
+            },
+            {
+              "id": "D",
+              "text": "Không để ý lắm, tiếp tục việc của mình",
+              "scoring": { "A3": -2, "A4": 1 }
+            }
+          ]
+        },
+        {
+          "id": "A4",
+          "original_id": "Q15",
+          "context": "Bạn nhận được email mời intern ở một công ty bạn chưa biết nhiều. Đính kèm là một tài liệu mô tả công việc khá dài.",
+          "text": "Bạn làm gì đầu tiên?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Đọc kỹ tài liệu trước khi quyết định có apply không",
+              "scoring": { "A2": 3, "A4": -1, "A5": 1, "SOLVE": 1, "Numerical": 1 }
+            },
+            {
+              "id": "B",
+              "text": "Apply luôn rồi tìm hiểu sau — cơ hội không chờ",
+              "scoring": { "A2": -1, "A4": 3, "A5": -1 }
+            },
+            {
+              "id": "C",
+              "text": "Hỏi thử bạn bè xem ai biết công ty này không",
+              "scoring": { "A4": 2, "A5": -1, "CREATE": 1 }
+            },
+            {
+              "id": "D",
+              "text": "Tìm thêm vài công ty khác để so sánh trước",
+              "scoring": { "A2": 1, "A5": 1, "BUILD": 1, "Systems": 1 }
+            }
+          ]
+        },
+        {
+          "id": "A5",
+          "original_id": "Q16",
+          "context": "Bạn được giới thiệu vào một dự án CLB đang làm dở. Sản phẩm chưa hoàn thiện, team đang cần người.",
+          "text": "Cảm giác đầu tiên của bạn là gì?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Hứng khởi — thích đóng góp vào thứ đang được xây",
+              "scoring": { "A4": 2, "A5": 1, "BUILD": 3 }
+            },
+            {
+              "id": "B",
+              "text": "Hơi lo — không biết team có welcome mình không",
+              "scoring": { "A3": 2, "CONNECT": 2, "Interpersonal": 1 }
+            },
+            {
+              "id": "C",
+              "text": "Tò mò — muốn hiểu sản phẩm đang ở giai đoạn nào",
+              "scoring": { "A2": 2, "SOLVE": 2, "Systems": 1 }
+            }
+          ]
+        },
+        {
+          "id": "A6",
+          "original_id": "Q22",
+          "context": "Cuối kỳ, giảng viên cho bạn chọn 1 trong 3 dạng bài tập lớn để nộp thay cho thi cuối kỳ.",
+          "text": "Bạn chọn dạng nào?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Viết báo cáo sáng tạo hoặc thiết kế poster",
+              "scoring": { "A2": 1, "CREATE": 3, "VisualCreative": 3 }
+            },
+            {
+              "id": "B",
+              "text": "Phân tích dữ liệu hoặc giải case study",
+              "scoring": { "A2": 3, "A5": 1, "SOLVE": 3, "Numerical": 3, "Systems": 1 }
+            },
+            {
+              "id": "C",
+              "text": "Thuyết trình hoặc quay video trình bày",
+              "scoring": { "A1": 2, "A4": 1, "A5": 1, "EXPRESS": 3, "Verbal": 3 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section_b",
+      "title": "Phần 2: Bạn làm việc thế nào?",
+      "subtitle": "Khám phá phong cách và bản năng",
+      "icon": "🎯",
+      "color": "#BBDEFB",
+      "questions": [
+        {
+          "id": "B1",
+          "original_id": "Q1",
+          "context": "Sáng thứ Hai, bạn đến lớp sớm. Phòng học vắng, chỉ có bạn và một ly cà phê ai đó để quên trên bàn.",
+          "text": "Bạn sẽ làm gì?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Uống thử — cà phê còn nóng thì không phí",
+              "scoring": { "A1": 2, "A4": 2 }
+            },
+            {
+              "id": "B",
+              "text": "Ngồi yên, mở điện thoại chờ — xem ai đến",
+              "scoring": { "A1": -2, "A4": -2 }
+            },
+            {
+              "id": "C",
+              "text": "Nhìn quanh xem ai vừa để quên ly cà phê",
+              "scoring": { "A3": 2, "CONNECT": 1, "Interpersonal": 1 }
+            }
+          ]
+        },
+        {
+          "id": "B2",
+          "original_id": "Q2",
+          "context": "Bạn bước vào một buổi workshop networking. Có khoảng 30 người, không ai quen, mỗi người đứng một góc nhìn điện thoại.",
+          "text": "Bạn cảm thấy thế nào?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Thở phào — có người thì đỡ chán hơn",
+              "scoring": { "A1": 2, "CONNECT": 1, "Interpersonal": 1 }
+            },
+            {
+              "id": "B",
+              "text": "Hơi ngại — thích không gian ít người hơn",
+              "scoring": { "A1": -3, "A3": -1 }
+            },
+            {
+              "id": "C",
+              "text": "Tò mò — mọi người ở đây làm ngành gì nhỉ?",
+              "scoring": { "A2": 2, "SOLVE": 1, "Systems": 1 }
+            },
+            {
+              "id": "D",
+              "text": "Chủ động bắt chuyện với người gần nhất",
+              "scoring": { "A1": 3, "A3": 1, "A4": 1, "CONNECT": 1, "Interpersonal": 1 }
+            }
+          ]
+        },
+        {
+          "id": "B3",
+          "original_id": "Q3",
+          "context": "Một bạn cùng lớp mới quen hỏi bạn: \"Ê, bạn biết mình muốn làm nghề gì sau khi ra trường chưa?\" Giọng rất bình thường, không áp lực.",
+          "text": "Bạn trả lời sao?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "\"Chưa biết. Nhưng mà bạn thì sao?\" — quan tâm người hỏi",
+              "scoring": { "A3": 3, "CONNECT": 2, "Interpersonal": 2 }
+            },
+            {
+              "id": "B",
+              "text": "\"Chưa rõ lắm, nhưng chắc sẽ tìm ra thôi.\"",
+              "scoring": { "A3": -1, "A4": 2, "A5": 1 }
+            },
+            {
+              "id": "C",
+              "text": "\"Sao bạn hỏi vậy?\" — tò mò về lý do hỏi",
+              "scoring": { "A2": 3, "A4": -1, "SOLVE": 1, "Systems": 1 }
+            }
+          ]
+        },
+        {
+          "id": "B4",
+          "original_id": "Q11",
+          "context": "Một người bạn nhắn tin: \"Ê giúp mình với.\" Rồi không nói gì thêm. Không nói cần giúp gì.",
+          "text": "Bạn phản hồi thế nào?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "\"Giúp gì? Nói đi.\" — hỏi thẳng vào vấn đề",
+              "scoring": { "A3": 1, "A4": 2, "A5": 1, "BUILD": 1 }
+            },
+            {
+              "id": "B",
+              "text": "\"Ổn không bạn?\" — lo cho cảm xúc trước",
+              "scoring": { "A3": 3, "CONNECT": 2, "Interpersonal": 2 }
+            },
+            {
+              "id": "C",
+              "text": "Chờ thêm — để bạn ấy nói tiếp khi sẵn sàng",
+              "scoring": { "A3": 2, "A4": -1, "CONNECT": 1, "Interpersonal": 1 }
+            },
+            {
+              "id": "D",
+              "text": "Nghĩ xem ai khác phù hợp giúp hơn mình",
+              "scoring": { "A3": 1, "A4": -1, "Systems": 1 }
+            }
+          ]
+        },
+        {
+          "id": "B5",
+          "original_id": "Q17",
+          "context": "Bạn join một nhóm làm đồ án. Không ai phân công, mỗi người làm một kiểu, chưa có ai lead. Tiến độ chậm nhưng vẫn đang chạy.",
+          "text": "Bạn sẽ làm gì?",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Lên plan tổng thể rồi share cho cả nhóm",
+              "scoring": { "A1": 1, "A2": 1, "A4": 1, "A5": 3, "BUILD": 3, "Systems": 2 }
+            },
+            {
+              "id": "B",
+              "text": "Hỏi từng người đang làm gì rồi kết nối lại",
+              "scoring": { "A1": 1, "A3": 2, "CONNECT": 3, "Interpersonal": 2 }
+            },
+            {
+              "id": "C",
+              "text": "Tìm phần chưa ai làm, lặng lẽ hoàn thành",
+              "scoring": { "A1": -1, "A2": 1, "A4": 1, "SOLVE": 3, "Numerical": 1 }
+            },
+            {
+              "id": "D",
+              "text": "Đề xuất cách tiếp cận hoàn toàn khác",
+              "scoring": { "A2": 1, "A4": -1, "A5": -2, "CREATE": 3, "VisualCreative": 1 }
+            }
+          ]
+        },
+        {
+          "id": "B6",
+          "original_id": "Q21",
+          "context": "Một anh chị mentor hỏi bạn trong buổi career coaching:",
+          "text": "\"Bạn muốn giỏi sâu một lĩnh vực, hay biết rộng để kết nối nhiều người?\"",
+          "answers": [
+            {
+              "id": "A",
+              "text": "Giỏi sâu — muốn thành chuyên gia thật sự",
+              "scoring": { "A1": -1, "A5": 2, "SOLVE": 2 }
+            },
+            {
+              "id": "B",
+              "text": "Biết rộng — kết nối người giỏi thú vị hơn",
+              "scoring": { "A1": 2, "A3": 2, "A5": -1, "CONNECT": 2, "Interpersonal": 2 }
+            },
+            {
+              "id": "C",
+              "text": "\"Hai thứ đó có mâu thuẫn nhau không?\"",
+              "scoring": { "A2": 2, "SOLVE": 1, "Systems": 1 }
+            },
+            {
+              "id": "D",
+              "text": "Không chọn — câu hỏi này không có đáp án đúng",
+              "scoring": { "A2": -1, "A5": -2, "CREATE": 1 }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,257 +1,295 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useGameStore from '../store/gameStore';
 
-const AI_BADGE = {
-  low: { label: 'Thấp', color: 'bg-green-100 text-green-800' },
-  low_medium: { label: 'Thấp-TB', color: 'bg-green-100 text-green-700' },
-  medium: { label: 'Trung bình', color: 'bg-yellow-100 text-yellow-800' },
-  medium_high: { label: 'TB-Cao', color: 'bg-orange-100 text-orange-800' },
-  high: { label: 'Cao', color: 'bg-red-100 text-red-800' },
-  high_routine_low_advisory: { label: 'Cao (routine)', color: 'bg-red-100 text-red-700' },
-  high_transactional: { label: 'Cao (giao dịch)', color: 'bg-red-100 text-red-700' },
-  high_warehouse_medium_planning: { label: 'Cao (kho)/TB', color: 'bg-orange-100 text-orange-700' },
-};
+/* ── helpers ── */
+function formatSalary(trieu) {
+  if (!trieu) return '—';
+  return `${trieu}tr`;
+}
 
-function AiRiskBadge({ threat }) {
-  const badge = AI_BADGE[threat] || { label: threat, color: 'bg-gray-100 text-gray-700' };
+function threatColor(threat) {
+  if (!threat) return 'text-[#999999]';
+  if (threat.startsWith('low')) return 'text-momo-success';
+  if (threat.startsWith('medium')) return 'text-momo-warning';
+  return 'text-momo-error';
+}
+
+function threatLabel(detail) {
+  return detail.ai_threat_label || detail.ai_threat || '—';
+}
+
+function scoreToTen(score) {
+  return Math.round((score / 100) * 10 * 10) / 10;
+}
+
+function timingAdvice(yearsLeft) {
+  if (yearsLeft >= 3) {
+    return {
+      icon: '🟢',
+      title: 'Bạn còn nhiều thời gian!',
+      text: 'Tập trung xây nền tảng kỹ năng, thực tập sớm để khám phá, và xây dựng portfolio từ bây giờ.',
+      bg: 'bg-green-50 border-green-200',
+      textColor: 'text-green-800',
+    };
+  }
+  if (yearsLeft >= 1) {
+    return {
+      icon: '🟡',
+      title: 'Thời điểm hành động!',
+      text: 'Ưu tiên thực tập, networking, và hoàn thiện CV. Tập trung vào 1-2 ngành phù hợp nhất thay vì dàn trải.',
+      bg: 'bg-yellow-50 border-yellow-200',
+      textColor: 'text-yellow-800',
+    };
+  }
+  return {
+    icon: '🔴',
+    title: 'Sắp ra trường — tập trung cao độ!',
+    text: 'Apply ngay các vị trí phù hợp, chuẩn bị phỏng vấn, và leverage mọi kết nối bạn có. Đừng chờ "sẵn sàng" — hãy bắt đầu ngay.',
+    bg: 'bg-red-50 border-red-200',
+    textColor: 'text-red-800',
+  };
+}
+
+/* ── Animated bar ── */
+function Bar({ value, max, color, label }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.width = `${(value / max) * 100}%`;
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [value, max]);
+
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${badge.color}`}>
-      AI: {badge.label}
-    </span>
+    <div className="flex items-center gap-3">
+      <span className="text-xs text-[#666666] w-20 shrink-0 text-right">{label}</span>
+      <div className="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
+        <div
+          ref={ref}
+          className={`h-full rounded-full transition-all duration-700 ease-out ${color}`}
+          style={{ width: '0%' }}
+        />
+      </div>
+      <span className="text-xs font-semibold text-[#1A1A1A] w-10">{value}/{max}</span>
+    </div>
   );
 }
 
-function SalaryTag({ salary }) {
-  if (!salary) return <span className="text-xs text-gray-400 italic">Chưa verified</span>;
-  return (
-    <span className="text-sm font-semibold text-purple-700">
-      {salary.value}tr <span className="text-xs font-normal text-gray-500">({salary.company})</span>
-    </span>
-  );
-}
-
-function getTimingAdvice(graduationYear) {
-  if (!graduationYear) return null;
-  const now = new Date().getFullYear();
-  const yearsLeft = graduationYear - now;
-  if (yearsLeft <= 0) return 'Ra trường rồi — nên apply ngay, ưu tiên hot roles.';
-  if (yearsLeft === 1) return 'Còn ~1 năm — tập trung internship + chứng chỉ ngay bây giờ.';
-  if (yearsLeft === 2) return 'Còn ~2 năm — build skills + portfolio, intern từ năm sau.';
-  return `Còn ~${yearsLeft} năm — khám phá rộng, xây nền tảng vững.`;
-}
-
+/* ── Main component ── */
 export default function ForecastScreen() {
   const navigate = useNavigate();
   const forecastResult = useGameStore((s) => s.forecastResult);
+  const quizResult = useGameStore((s) => s.quizResult);
   const userContext = useGameStore((s) => s.userContext);
-  const [expandedIndustry, setExpandedIndustry] = useState(null);
 
   useEffect(() => {
-    if (!forecastResult) {
+    if (!forecastResult || !quizResult) {
       navigate('/');
     }
-  }, [forecastResult, navigate]);
+  }, [forecastResult, quizResult, navigate]);
 
-  if (!forecastResult) return null;
+  if (!forecastResult || !quizResult) return null;
 
-  const forecast = forecastResult;
-  const graduationYear = userContext?.graduation_year;
-  const timing = getTimingAdvice(graduationYear);
-  const topRoles = forecast.top_roles.slice(0, 3);
+  const { top_roles, hot_roles, avoid_roles, industries_detail } = forecastResult;
+  const gradYear = userContext.graduation_year || 2027;
+  const currentYear = 2026;
+  const yearsLeft = Math.max(0, gradYear - currentYear);
+  const breedName = quizResult.primary?.name || 'Chưa xác định';
+  const major = userContext.major || '';
+
+  const primaryIndustry = industries_detail.find((d) => d.isPrimary);
+  const avgSalary = primaryIndustry?.summary_salary || '—';
+  const avgForecast = primaryIndustry ? scoreToTen(primaryIndustry.forecast_score) : '—';
+  const aiThreat = primaryIndustry ? threatLabel(primaryIndustry) : '—';
+
+  const displayRoles = top_roles.slice(0, 3);
+  const shouldPursue = hot_roles.filter((_, i) => i < 6);
+  const shouldAvoid = avoid_roles.filter((_, i) => i < 6);
+  const timing = timingAdvice(yearsLeft);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white px-4 py-10">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-momo-soft via-white to-white">
+      <div className="max-w-2xl mx-auto px-5 py-8 space-y-8">
 
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Dự Báo Thị Trường
-          </h1>
-          <p className="text-gray-500">Ngành nghề phù hợp với profile của bạn</p>
-        </div>
-
-        {/* Market Summary */}
-        <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6 mb-8">
-          <h2 className="text-sm font-semibold text-purple-600 uppercase tracking-wide mb-2">
-            Tổng quan thị trường
+        {/* ═══ Section 1: Hero / Overview ═══ */}
+        <div className="text-center space-y-3 animate-fade-in">
+          {/* Logo */}
+          <h2 className="text-[32px] font-bold text-momo tracking-tight">
+            GenPath 💗
           </h2>
-          <p className="text-gray-700 leading-relaxed text-sm">
-            {forecast.market_summary}
+          <div className="text-5xl">📊</div>
+          <h1 className="text-2xl md:text-[28px] font-bold text-[#1A1A1A]">
+            Dự báo thị trường
+          </h1>
+          <p className="text-[#666666]">
+            Ra trường năm <span className="font-semibold text-[#1A1A1A]">{gradYear}</span>
+            {major && <> &middot; Ngành <span className="font-semibold text-[#1A1A1A]">{major}</span></>}
+          </p>
+          <p className="text-sm text-momo font-medium">
+            Giống mèo: {breedName}
           </p>
         </div>
 
-        {/* Timing Advice */}
-        {timing && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8 flex items-start gap-3">
-            <span className="text-xl mt-0.5">&#9200;</span>
+        {/* Stat cards */}
+        <div className="grid grid-cols-3 gap-3 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <div className="bg-white rounded-2xl border border-gray-200 p-4 text-center shadow-[0_4px_16px_rgba(165,0,100,0.12)]">
+            <p className="text-2xl font-bold text-[#1A1A1A]">{avgSalary}</p>
+            <p className="text-xs text-[#999999] mt-1">Lương trung bình</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-gray-200 p-4 text-center shadow-[0_4px_16px_rgba(165,0,100,0.12)]">
+            <p className="text-2xl font-bold text-momo-info">{avgForecast}/10</p>
+            <p className="text-xs text-[#999999] mt-1">Triển vọng</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-gray-200 p-4 text-center shadow-[0_4px_16px_rgba(165,0,100,0.12)]">
+            <p className={`text-2xl font-bold ${primaryIndustry ? threatColor(primaryIndustry.ai_threat) : 'text-[#999999]'}`}>
+              {aiThreat}
+            </p>
+            <p className="text-xs text-[#999999] mt-1">Rủi ro AI</p>
+          </div>
+        </div>
+
+        {/* ═══ Section 2: Top Roles ═══ */}
+        <div className="space-y-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <h2 className="text-xl font-bold text-[#1A1A1A]">
+            Top nghề nghiệp phù hợp
+          </h2>
+
+          {displayRoles.map((role, i) => {
+            const score10 = scoreToTen(role.forecast_score);
+            const salary = role.salary_verified?.value;
+            const demand = Math.min(10, Math.round(score10 * 1.05));
+            const competition = Math.max(2, 10 - Math.round(score10 * 0.6));
+            const aiSafety = Math.min(10, Math.round(score10 * 0.9));
+
+            return (
+              <div
+                key={`${role.role}-${i}`}
+                className="bg-white rounded-2xl border border-gray-200 shadow-[0_4px_16px_rgba(165,0,100,0.12)] p-5 space-y-4"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      {i === 0 && <span className="text-xs bg-momo-soft text-momo px-2 py-0.5 rounded-full font-medium">#1 Phù hợp nhất</span>}
+                      {role.isPrimary && i !== 0 && <span className="text-xs bg-blue-50 text-momo-info px-2 py-0.5 rounded-full font-medium">Ngành chính</span>}
+                      {!role.isPrimary && <span className="text-xs bg-gray-100 text-[#999999] px-2 py-0.5 rounded-full font-medium">Ngành phụ</span>}
+                    </div>
+                    <h3 className="text-lg font-semibold text-[#1A1A1A]">{role.role}</h3>
+                    <p className="text-sm text-[#666666]">{role.industry}</p>
+                  </div>
+                  {salary && (
+                    <div className="text-right shrink-0">
+                      <p className="text-lg font-bold text-momo-success">{formatSalary(salary)}</p>
+                      <p className="text-[10px] text-[#999999]">
+                        {role.salary_verified?.company || 'verified'}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Bar value={demand} max={10} color="bg-momo-info" label="Nhu cầu" />
+                  <Bar value={competition} max={10} color="bg-momo-warning" label="Cạnh tranh" />
+                  <Bar value={aiSafety} max={10} color="bg-momo-success" label="An toàn AI" />
+                </div>
+
+                <p className="text-xs text-[#999999]">
+                  Điểm triển vọng: {score10}/10
+                </p>
+              </div>
+            );
+          })}
+
+          {displayRoles.length === 0 && (
+            <p className="text-[#999999] text-center py-6">Chưa có dữ liệu nghề nghiệp.</p>
+          )}
+        </div>
+
+        {/* ═══ Section 3: Should / Shouldn't ═══ */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+          <div className="bg-green-50 rounded-2xl border border-green-200 p-5">
+            <h3 className="text-base font-bold text-green-800 mb-3 flex items-center gap-2">
+              <span>✅</span> Nên theo đuổi
+            </h3>
+            {shouldPursue.length > 0 ? (
+              <ul className="space-y-2">
+                {shouldPursue.map((r, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-momo-success mt-0.5 shrink-0">&#x2022;</span>
+                    <div>
+                      <p className="text-sm font-medium text-green-900">{r.role}</p>
+                      <p className="text-xs text-green-600">{r.industry}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-green-600">Chưa có dữ liệu</p>
+            )}
+          </div>
+
+          <div className="bg-red-50 rounded-2xl border border-red-200 p-5">
+            <h3 className="text-base font-bold text-red-800 mb-3 flex items-center gap-2">
+              <span>⚠️</span> Cần cân nhắc
+            </h3>
+            {shouldAvoid.length > 0 ? (
+              <ul className="space-y-2">
+                {shouldAvoid.map((r, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-momo-error mt-0.5 shrink-0">&#x2022;</span>
+                    <div>
+                      <p className="text-sm font-medium text-red-900">{r.role}</p>
+                      <p className="text-xs text-red-500">{r.industry} &mdash; {r.reason}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-red-500">Không có cảnh báo</p>
+            )}
+          </div>
+        </div>
+
+        {/* ═══ Section 4: Timing Advice ═══ */}
+        <div
+          className={`rounded-2xl border p-5 ${timing.bg} animate-fade-in`}
+          style={{ animationDelay: '0.4s' }}
+        >
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">{timing.icon}</span>
             <div>
-              <p className="text-sm font-medium text-blue-800">Timing cho bạn</p>
-              <p className="text-sm text-blue-700">{timing}</p>
+              <h3 className={`font-bold ${timing.textColor}`}>{timing.title}</h3>
+              <p className={`text-sm mt-1 ${timing.textColor} opacity-80`}>
+                Còn {yearsLeft > 0 ? `${yearsLeft} năm` : 'dưới 1 năm'} trước khi ra trường.
+              </p>
+              <p className={`text-sm mt-2 ${timing.textColor}`}>{timing.text}</p>
             </div>
           </div>
-        )}
-
-        {/* Top 3 Roles Table */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Roles</h2>
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-gray-100 bg-gray-50">
-                  <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">#</th>
-                  <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Role</th>
-                  <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Salary</th>
-                  <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">AI Risk</th>
-                  <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topRoles.map((role, i) => (
-                  <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td className="px-5 py-4 text-sm font-medium text-purple-600">{i + 1}</td>
-                    <td className="px-5 py-4">
-                      <p className="text-sm font-medium text-gray-900">{role.role}</p>
-                      <p className="text-xs text-gray-500">{role.industry}</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <SalaryTag salary={role.salary_verified} />
-                    </td>
-                    <td className="px-5 py-4">
-                      <AiRiskBadge threat={
-                        forecast.industries_detail.find(ind => ind.name === role.industry)?.ai_threat || 'medium'
-                      } />
-                    </td>
-                    <td className="px-5 py-4">
-                      <span className="text-sm font-bold text-gray-800">{role.forecast_score}</span>
-                      <span className="text-xs text-gray-400">/100</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
 
-        {/* Hot vs Avoid Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Hot Roles */}
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-5">
-            <h3 className="text-sm font-semibold text-green-700 uppercase tracking-wide mb-3">
-              Hot Roles
-            </h3>
-            <ul className="space-y-2">
-              {forecast.hot_roles.map((r, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-green-500 mt-0.5 text-sm">&#9650;</span>
-                  <div>
-                    <p className="text-sm font-medium text-gray-800">{r.role}</p>
-                    <p className="text-xs text-gray-500">{r.industry}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Avoid Roles */}
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
-            <h3 className="text-sm font-semibold text-red-700 uppercase tracking-wide mb-3">
-              Avoid / Declining
-            </h3>
-            <ul className="space-y-2">
-              {forecast.avoid_roles.map((r, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-red-500 mt-0.5 text-sm">&#9660;</span>
-                  <div>
-                    <p className="text-sm font-medium text-gray-800">{r.role}</p>
-                    <p className="text-xs text-gray-500">{r.industry}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Industry Detail Expandable */}
-        <div className="mb-10">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Chi Tiet Nganh</h2>
-          <div className="space-y-3">
-            {forecast.industries_detail.map((ind) => (
-              <div
-                key={ind.id}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
-              >
-                <button
-                  className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-colors"
-                  onClick={() => setExpandedIndustry(expandedIndustry === ind.id ? null : ind.id)}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={`w-2 h-2 rounded-full ${ind.isPrimary ? 'bg-purple-500' : 'bg-gray-300'}`} />
-                    <span className="text-sm font-medium text-gray-900">{ind.name}</span>
-                    {ind.no_verified_data && (
-                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
-                        Chua co verified salary
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <AiRiskBadge threat={ind.ai_threat} />
-                    <span className="text-xs text-gray-400">
-                      {expandedIndustry === ind.id ? '&#9650;' : '&#9660;'}
-                    </span>
-                  </div>
-                </button>
-
-                {expandedIndustry === ind.id && (
-                  <div className="px-5 pb-5 border-t border-gray-100 pt-4">
-                    <p className="text-xs text-gray-500 mb-3">
-                      Salary range: <span className="font-medium text-gray-700">{ind.summary_salary}</span>
-                    </p>
-                    {ind.verified_salaries.length > 0 && (
-                      <div className="mb-3">
-                        <p className="text-xs font-medium text-gray-600 mb-1">Verified salaries:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {ind.verified_salaries.map((v, i) => (
-                            <span key={i} className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-lg">
-                              {v.role}: {v.salary_trieu}tr ({v.company})
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <p className="text-xs font-medium text-green-700 mb-1">Growing:</p>
-                        <ul className="text-xs text-gray-600 space-y-0.5">
-                          {ind.roles_growing.slice(0, 4).map((r, i) => (
-                            <li key={i}>+ {r}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <p className="text-xs font-medium text-red-700 mb-1">Declining:</p>
-                        <ul className="text-xs text-gray-600 space-y-0.5">
-                          {ind.roles_declining.slice(0, 4).map((r, i) => (
-                            <li key={i}>- {r}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Next CTA */}
-        <div className="text-center">
+        {/* ═══ CTA Buttons ═══ */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-2 pb-8 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+          <button
+            onClick={() => navigate('/result')}
+            className="flex-1 px-8 py-4 rounded-2xl border-2 border-gray-200 text-[#1A1A1A] font-medium hover:border-gray-300 hover:bg-[#F8F8F8] transition-all cursor-pointer"
+          >
+            &larr; Xem lại kết quả
+          </button>
           <button
             onClick={() => navigate('/roadmap')}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-medium px-8 py-3 rounded-full transition-colors shadow-lg shadow-purple-200"
+            className="flex-1 px-8 py-4 rounded-2xl bg-momo hover:bg-momo-light text-white font-semibold shadow-[0_4px_16px_rgba(165,0,100,0.12)] hover:shadow-[0_8px_32px_rgba(165,0,100,0.16)] transition-all active:scale-[0.98] cursor-pointer"
           >
-            Xem Roadmap &rarr;
+            Xem lộ trình kỹ năng &rarr;
           </button>
         </div>
       </div>

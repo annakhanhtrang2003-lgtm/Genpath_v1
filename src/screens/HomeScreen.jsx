@@ -1,37 +1,74 @@
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import PageTransition from '../components/PageTransition';
+import AnimatedCat from '../components/AnimatedCat';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-b from-purple-50 via-white to-white">
-      {/* Cat icon */}
-      <div className="text-7xl mb-6">&#128049;</div>
+    <PageTransition>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-b from-momo-soft via-white to-white">
+        {/* Logo */}
+        <motion.h2
+          className="text-[32px] font-bold text-momo mb-8 tracking-tight"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          GenPath 💗
+        </motion.h2>
 
-      {/* Headline */}
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center leading-tight mb-4">
-        Kham pha ban than
-        <br />
-        <span className="text-purple-600">qua Coi Giua</span>
-      </h1>
+        {/* Cat mascot */}
+        <div className="mb-6">
+          <AnimatedCat breed="tabby" size={80} mood="idle" />
+        </div>
 
-      {/* Subtext */}
-      <p className="text-lg text-gray-500 text-center mb-10 max-w-md">
-        24 cau hoi &middot; 7 giong meo &middot; 1 lo trinh rieng cho ban
-      </p>
+        {/* Headline */}
+        <motion.h1
+          className="text-[28px] md:text-4xl font-bold text-[#1A1A1A] text-center leading-tight mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Khám phá bản thân
+          <br />
+          <span className="text-momo">qua Cõi Giữa</span>
+        </motion.h1>
 
-      {/* CTA */}
-      <button
-        onClick={() => navigate('/input')}
-        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold text-lg px-10 py-4 rounded-full shadow-lg shadow-purple-200 hover:shadow-xl hover:shadow-purple-300 transition-all active:scale-95 cursor-pointer"
-      >
-        Bat dau hanh trinh &rarr;
-      </button>
+        {/* Subtext */}
+        <motion.p
+          className="text-base text-[#666666] text-center mb-10 max-w-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          24 câu hỏi &middot; 7 giống mèo &middot; 1 lộ trình riêng cho bạn
+        </motion.p>
 
-      {/* Footer note */}
-      <p className="mt-12 text-sm text-gray-400">
-        GenPath &mdash; Tim duong di, theo cach cua ban
-      </p>
-    </div>
+        {/* CTA */}
+        <motion.button
+          onClick={() => navigate('/input')}
+          className="bg-momo hover:bg-momo-light text-white font-semibold text-lg px-8 py-4 rounded-2xl shadow-[0_4px_16px_rgba(165,0,100,0.12)] hover:shadow-[0_8px_32px_rgba(165,0,100,0.16)] transition-all cursor-pointer"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Bắt đầu hành trình &rarr;
+        </motion.button>
+
+        {/* Footer note */}
+        <motion.p
+          className="mt-12 text-sm text-[#999999]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+        >
+          GenPath &mdash; Tìm đường đi, theo cách của bạn
+        </motion.p>
+      </div>
+    </PageTransition>
   );
 }
